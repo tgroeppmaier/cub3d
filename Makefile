@@ -1,5 +1,5 @@
 CC=clang
-CFLAGS = -Iinclude -pthread
+CFLAGS = -Wall -Wextra -Werror -Iinclude -pthread
 LDFLAGS = -Llib -lmlx42 -ldl -lglfw -lm
 NAME = cube3D 
 SRC = cube3D.c
