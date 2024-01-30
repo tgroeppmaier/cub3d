@@ -1,14 +1,18 @@
 CC=clang
 CFLAGS = -Iinclude -pthread
-LDFLAGS = -Linclude -lmlx42 -ldl -lglfw -lm
+s LDFLAGS = -Llib -lmlx42 -ldl -lglfw -lm
 NAME = cube3D 
 SRC = cube3D.c
 OBJ = $(SRC:.c=.o)
 HEADER = include/MLX42.h
+LIBDIR = MLX42
 
-.PHONY: all clean fclean re 
+.PHONY: all clean fclean re lib
 
-all: $(NAME)
+all: lib $(NAME)
+
+lib:
+	cd $(LIBDIR) && cmake -B ../lib && cmake --build ../lib -j4
 
 $(NAME): $(OBJ)
 	$(CC) $(OBJ) $(LDFLAGS) -o $@
@@ -21,5 +25,6 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
+	rm -rf lib/*
 
 re: fclean all
