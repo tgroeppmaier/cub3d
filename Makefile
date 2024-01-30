@@ -1,6 +1,6 @@
 CC=clang
 CFLAGS = -Iinclude -pthread
-s LDFLAGS = -Llib -lmlx42 -ldl -lglfw -lm
+LDFLAGS = -Llib -lmlx42 -ldl -lglfw -lm
 NAME = cube3D 
 SRC = cube3D.c
 OBJ = $(SRC:.c=.o)
