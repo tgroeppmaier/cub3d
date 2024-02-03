@@ -1,6 +1,7 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
+# include "../src/libft/libft.h"
 # include <stdbool.h>
 # include <stddef.h>
 # include <stdio.h>
@@ -77,14 +78,14 @@ typedef struct s_data
 }			t_data;
 
 /*			ft_split.c		*/
-size_t		ft_strlen(const char *s);
-char		**ft_split(char const *s, char c);
+// size_t		ft_strlen(const char *s);
+// char		**ft_split(char const *s, char c);
 
-/*          utils.c          */
-void		ft_putstr(char *str);
-int			ft_strncmp(const char *s1, const char *s2, size_t n);
-void		ft_putnbr(int n);
-void		*ft_memset(void *s, int c, size_t n);
+// /*          utils.c          */
+// void		ft_putstr(char *str);
+// int			ft_strncmp(const char *s1, const char *s2, size_t n);
+// void		ft_putnbr(int n);
+// void		*ft_memset(void *s, int c, size_t n);
 
 /*          errors.c         */
 void		error_exit_read(int exit_code);

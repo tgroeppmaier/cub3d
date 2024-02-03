@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <fcntl.h>
-#include "cub3D.h"
-#include <string.h>
+#include "include/cub3D.h"
 
 int main(int argc, char **argv)
 {
@@ -9,8 +6,8 @@ int main(int argc, char **argv)
 	t_asset	assets;
 	t_map	map;
 
-	memset(&assets, 0, sizeof(assets));
-	memset(&map, 0, sizeof(map));
+	ft_memset(&assets, 0, sizeof(assets));
+	ft_memset(&map, 0, sizeof(map));
 	data.exit_loop = false;
 	data.map = &map;
 	data.assets = &assets;
