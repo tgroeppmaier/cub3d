@@ -5,18 +5,18 @@
 
 int main(int argc, char **argv)
 {
-	t_data	image;
+	t_data	data;
 	t_asset	assets;
 	t_map	map;
 
 	memset(&assets, 0, sizeof(assets));
 	memset(&map, 0, sizeof(map));
-	image.exit_loop = false;
-	image.map = &map;
-	image.a = &assets;
-	
-	map_check(argc, argv, &map);
-	printf("%s", map.buffer);
-	printf("Player direction: %c\n", map.player_direction);
+	data.exit_loop = false;
+	data.map = &map;
+	data.assets = &assets;
+		
+	check_argument(argc, argv);
+	read_file(argv[1], &data);
+	parse_file(argc, argv, &data);
 	return(0);
 }

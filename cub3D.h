@@ -6,16 +6,40 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <fcntl.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <string.h>
 
 # define BLOCK_SIZE 64
 # define BUFFER_SIZE 2048
 # define MIN_FILE_SIZE 17
 
+typedef enum {
+	ID_NO,
+	ID_SO,
+	ID_WE,
+	ID_EA,
+	ID_UNKNOWN
+} Identifier;
+
+Identifier get_identifier(char *str)
+{
+	if(ft_strncmp(str, "NO ", 3) == 0)
+		return ID_NO;
+	if(ft_strncmp(str, "SO ", 3) == 0)
+		return ID_SO;
+	if(ft_strncmp(str, "WE ", 3) == 0)
+		return ID_WE;
+	if(ft_strncmp(str, "EA ", 3) == 0)
+		return ID_EA;
+	return ID_UNKNOWN;
+}
+
 typedef struct s_map
 {
 	int		width;
 	int		height;
-	char	buffer[BUFFER_SIZE];
 	int		player_x;
 	int		player_y;
 	int		player_count;
@@ -25,7 +49,10 @@ typedef struct s_map
 
 typedef struct s_asset
 {
-	void	*wall;
+	void	*NO_path;
+	void	*SO_path;
+	void	*WE_path;
+	void	*EA_path;
 	void	*floor;
 	void	*coll;
 	void	*exit;
@@ -43,7 +70,9 @@ typedef struct s_data
 	int		line_length;
 	int		endian;
 	bool	exit_loop;
-	t_asset	*a;
+	char	buffer[BUFFER_SIZE];
+	char	**file;
+	t_asset	*assets;
 	t_map	*map;
 }			t_data;
 
@@ -64,7 +93,10 @@ void		error_exit_map(int exit_code, t_map *map);
 void		check_asset_error(t_data *image);
 
 /* 			parse_map.c */
-void		map_check(int argc, char **argv, t_map *map);
+void	check_argument(int argc, char **argv);
+void	read_file(char *path, t_data *data);
+
+void		parse_file(int argc, char **argv, t_data *data);
 
 
 #endif

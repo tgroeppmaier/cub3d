@@ -18,3 +18,23 @@ cmake -DBUILD_TESTS=ON -B build && cmake --build build --parallel
 ctest --output-on-failure --test-dir build
 ```
 - compile with `gcc cube3D.c libmlx42.a -Iinclude -ldl -lglfw -pthread -lm`
+
+## To Do
+
+### Checking Arguments
+- [x] check no of Arguments == 2
+- [x] check for .cub ending
+- [x] check if its directory
+- [x] read file into buffer
+
+### Parsing
+#### Parse configuration
+- [ ] split with ft_split into lines
+- [ ] check if all indentifiers are there and no duplicates
+- [ ] check if paths are valid
+- [ ] save path
+- [ ] check if arguments for floor and ceiling is valid 
+- [ ] save values
+
+#### Parse Map
+- [ ] after all identifiers succesful, start reading map
