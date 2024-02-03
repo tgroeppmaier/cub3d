@@ -13,8 +13,8 @@ A 3D graphical project that uses raycasting
 - build ```code
 cmake -B build && cmake --build build --parallel --config (Debug|Release|RelWithDebInfo|MinSizeRel) --target install```
 - run tests
-```bash
+`bash
 cmake -DBUILD_TESTS=ON -B build && cmake --build build --parallel
 ctest --output-on-failure --test-dir build
-```
+`
 - compile with `gcc cube3D.c libmlx42.a -Iinclude -ldl -lglfw -pthread -lm`
