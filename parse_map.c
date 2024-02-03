@@ -1,7 +1,6 @@
 #include "include/cub3D.h"
 #include <fcntl.h>
 
-
 static bool	is_dir(char *path)
 {
 	int		fd;
@@ -82,8 +81,25 @@ bool ft_isspace(int c)
 
 // }
 
+char *get_config_data(char *line)
+{
+	int i;
+	int len = ft_strlen(line);
+	
+	i = 0;
+	while(i < len && ft_isspace(line[i]))
+		i++;
+	while(i < len && !ft_isspace(line[i]))
+		i++;
+	if(i == 0)
+		error_exit(ERR_IDENT);
+	return(ft_strndup(line, i));
+}
+
 Identifier get_identifier(char *str)
 {
+	printf("%s\n", str);
+	
 	if(ft_strncmp(str, "NO ", 3) == 0)
 		return ID_NO;
 	if(ft_strncmp(str, "SO ", 3) == 0)
@@ -102,11 +118,22 @@ void parse_line(char *line, t_data *data)
 	if(get_identifier(line) == ID_NO)
 	{
 		if(data->assets->NO_path == NULL)
-			data->assets->NO_path = strdup(line + 3);
+			data->assets->NO_path = get_config_data(line + 3);
 		else
 		{
-			printf("Error. Identifier duplicate\n");
-			exit(1);
+			printf("test\n");
+			error_exit(ERR_IDENT);
+		}
+	}
+	if(get_identifier(line) == ID_SO)
+	{
+		if(data->assets->SO_path == NULL)
+			data->assets->SO_path = get_config_data(line + 3);
+		else
+		{
+			printf("test\n");
+			error_exit(ERR_IDENT);
+
 		}
 	}
 }
@@ -124,11 +151,19 @@ void	parse_config(t_data *data)
 
 }
 
+
 /* splits the file into lines and saves the ** in data->file */
 
-void	parse_file(t_data *data)
+void parse_file(t_data *data)
 {
-	data->file = ft_split(data->buffer, '\n');
+    // int i = 0;
 
+    data->file = ft_split(data->buffer, '\n');
+	parse_config(data);
+    // while (data->file[i])
+    // {
+    //     printf("%s\n", data->file[i]);
+    //     i++;
+    // }
 }
 

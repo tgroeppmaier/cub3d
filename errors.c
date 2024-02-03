@@ -17,6 +17,8 @@ void	error_exit(ErrorCode code)
 		printf("error opening file\n");
 	else if(code == ERR_FILE_SIZE)
 		printf("file too big\n");
+	else if(code == ERR_IDENT)
+		printf("Identifier error\n");
 	exit(1);
 }
 

@@ -20,6 +20,7 @@ typedef enum {
 	ERR_USAGE,
 	ERR_FILE_NOT_CUB,
 	ERR_FILE_OPEN,
+	ERR_IDENT,
 	ERR_FILE_READ,
 	ERR_FILE_SIZE,
 	ERR_FILE_NOT_XPM,
@@ -70,10 +71,10 @@ typedef struct s_map
 
 typedef struct s_asset
 {
-	void	*NO_path;
-	void	*SO_path;
-	void	*WE_path;
-	void	*EA_path;
+	char	*NO_path;
+	char	*SO_path;
+	char	*WE_path;
+	char	*EA_path;
 	void	*floor;
 	void	*coll;
 	void	*exit;
