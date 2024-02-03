@@ -14,6 +14,6 @@ int main(int argc, char **argv)
 		
 	check_argument(argc, argv);
 	read_file(argv[1], &data);
-	parse_file(argc, argv, &data);
+	parse_file(&data);
 	return(0);
 }

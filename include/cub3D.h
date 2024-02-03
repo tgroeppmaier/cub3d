@@ -13,8 +13,39 @@
 # include <string.h>
 
 # define BLOCK_SIZE 64
-# define BUFFER_SIZE 2048
+# define BUFFER_SIZE 20480
 # define MIN_FILE_SIZE 17
+
+typedef enum {
+	ERR_USAGE,
+	ERR_FILE_NOT_CUB,
+	ERR_FILE_OPEN,
+	ERR_FILE_READ,
+	ERR_FILE_SIZE,
+	ERR_FILE_NOT_XPM,
+	ERR_FILE_IS_DIR,
+	ERR_FLOOR_CEILING,
+	ERR_COLOR_FLOOR,
+	ERR_COLOR_CEILING,
+	ERR_INVALID_MAP,
+	ERR_INV_LETTER,
+	ERR_NUM_PLAYER,
+	ERR_TEX_RGB_VAL,
+	ERR_TEX_MISSING,
+	ERR_TEX_INVALID,
+	ERR_COLOR_MISSING,
+	ERR_MAP_MISSING,
+	ERR_MAP_TOO_SMALL,
+	ERR_MAP_NO_WALLS,
+	ERR_MAP_LAST,
+	ERR_PLAYER_POS,
+	ERR_PLAYER_DIR,
+	ERR_MALLOC,
+	ERR_MLX_START,
+	ERR_MLX_WIN,
+	ERR_MLX_IMG,
+	ERR_COUNT // This is the total number of error codes
+} ErrorCode;
 
 typedef enum {
 	ID_NO,
@@ -24,18 +55,7 @@ typedef enum {
 	ID_UNKNOWN
 } Identifier;
 
-Identifier get_identifier(char *str)
-{
-	if(ft_strncmp(str, "NO ", 3) == 0)
-		return ID_NO;
-	if(ft_strncmp(str, "SO ", 3) == 0)
-		return ID_SO;
-	if(ft_strncmp(str, "WE ", 3) == 0)
-		return ID_WE;
-	if(ft_strncmp(str, "EA ", 3) == 0)
-		return ID_EA;
-	return ID_UNKNOWN;
-}
+
 
 typedef struct s_map
 {
@@ -88,16 +108,17 @@ typedef struct s_data
 // void		*ft_memset(void *s, int c, size_t n);
 
 /*          errors.c         */
-void		error_exit_read(int exit_code);
-void		free_map(t_map *map);
-void		error_exit_map(int exit_code, t_map *map);
-void		check_asset_error(t_data *image);
+// void		error_exit_read(int exit_code);
+// void		free_map(t_map *map);
+// void		error_exit_map(int exit_code, t_map *map);
+// void		check_asset_error(t_data *image);
+void		error_exit(ErrorCode code);
 
 /* 			parse_map.c */
-void	check_argument(int argc, char **argv);
-void	read_file(char *path, t_data *data);
+void		check_argument(int argc, char **argv);
+void		read_file(char *path, t_data *data);
 
-void		parse_file(int argc, char **argv, t_data *data);
+void		parse_file(t_data *data);
 
 
 #endif
