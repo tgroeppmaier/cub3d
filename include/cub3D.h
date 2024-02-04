@@ -13,7 +13,7 @@
 # include <string.h>
 
 # define BLOCK_SIZE 64
-# define BUFFER_SIZE 20480
+# define BUFFER_SIZE 100
 # define MIN_FILE_SIZE 17
 
 typedef enum {
@@ -92,8 +92,8 @@ typedef struct s_data
 	int		line_length;
 	int		endian;
 	bool	exit_loop;
-	char	buffer[BUFFER_SIZE];
-	char	**file;
+	char	*file;
+	char	**file_by_line;
 	t_asset	*assets;
 	t_map	*map;
 }			t_data;

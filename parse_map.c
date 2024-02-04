@@ -41,27 +41,46 @@ void	check_argument(int argc, char **argv)
 }
 
 /*
-	this function opens the config file and reads it into buffer. 
-	it reads up to buffer size - 1.
+	opens file and reads it into data->file.
 */
 
 void	read_file(char *path, t_data *data)
 {
 	int	fd;
 	int	bytes_read;
+	char *buffer;
+	char *tmp = NULL;
 
 	if (is_dir(path))
 		error_exit(data, ERR_FILE_IS_DIR);
+	
+	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if(!buffer)
+		error_exit(data, ERR_MALLOC);
+	data->file = ft_strdup("");
+
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
+	{
+		free(buffer);
 		error_exit(data, ERR_FILE_OPEN);
-	bytes_read = read(fd, data->buffer, BUFFER_SIZE - 1);
-	close(fd);
+	}
+	while((bytes_read = read(fd, buffer, BUFFER_SIZE)) > 0)
+	{
+		buffer[bytes_read] = '\0';
+		tmp = ft_strjoin(data->file, buffer);
+		free(data->file);  // free the old string
+		data->file = ft_strdup(tmp);  // assign the new string
+		free(tmp);
+	}
 	if (bytes_read == -1)
+	{
+		free(buffer);
+		close(fd);
 		error_exit(data, ERR_FILE_READ);
-	if (bytes_read == BUFFER_SIZE - 1)
-		error_exit(data, ERR_FILE_SIZE);
-	data->buffer[bytes_read] = '\0';
+	}
+	close(fd);
+	free(buffer);  // free the buffer
 }
 
 bool ft_isspace(int c) 
@@ -129,9 +148,9 @@ void	parse_config(t_data *data)
 	int i = 0;	
 	// int j = 0;
 
-	while(data->file[i])
+	while(data->file_by_line[i])
 	{
-		parse_line(data->file[i], data);
+		parse_line(data->file_by_line[i], data);
 		i++;
 	}
 
@@ -144,7 +163,12 @@ void parse_file(t_data *data)
 {
     // int i = 0;
 
-    data->file = ft_split(data->buffer, '\n');
+    if(data->file == NULL)
+	{
+		printf("file not read\n");
+		exit(1);
+	}
+	data->file_by_line = ft_split(data->file, '\n');
 	parse_config(data);
     // while (data->file[i])
     // {
