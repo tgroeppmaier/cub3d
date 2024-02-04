@@ -4,8 +4,29 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+void free_assets(t_data *data)
+{
+	free(data->assets->NO_path);
+	free(data->assets->SO_path);
+	free(data->assets->WE_path);
+	free(data->assets->EA_path);
+}
 
-void	error_exit(ErrorCode code)
+void free_file(t_data *data)
+{
+	int i;
+	
+	i = -1;
+	while(data->file[++i])
+	{
+		free(data->file[i]);
+		data->file[i] = NULL;
+	}
+	free(data->file);
+	data->file = NULL;
+}
+
+void	error_exit(t_data *data, ErrorCode code)
 {
 	if(code == ERR_FILE_NOT_CUB)
 		printf("file is not .cub\n");
@@ -19,6 +40,8 @@ void	error_exit(ErrorCode code)
 		printf("file too big\n");
 	else if(code == ERR_IDENT)
 		printf("Identifier error\n");
+	free_file(data);
+	free_assets(data);
 	exit(1);
 }
 

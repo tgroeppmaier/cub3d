@@ -51,16 +51,16 @@ void	read_file(char *path, t_data *data)
 	int	bytes_read;
 
 	if (is_dir(path))
-		error_exit(ERR_FILE_IS_DIR);
+		error_exit(data, ERR_FILE_IS_DIR);
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
-		error_exit(ERR_FILE_OPEN);
+		error_exit(data, ERR_FILE_OPEN);
 	bytes_read = read(fd, data->buffer, BUFFER_SIZE - 1);
 	close(fd);
 	if (bytes_read == -1)
-		error_exit(ERR_FILE_READ);
+		error_exit(data, ERR_FILE_READ);
 	if (bytes_read == BUFFER_SIZE - 1)
-		error_exit(ERR_FILE_SIZE);
+		error_exit(data, ERR_FILE_SIZE);
 	data->buffer[bytes_read] = '\0';
 }
 
@@ -69,19 +69,7 @@ bool ft_isspace(int c)
 	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r');
 }
 
-// char *get_information(char *str)
-// {
-// 	int i = 0;
-	
-// 	while(*str && ft_isspace(*str))
-// 		str++;
-// 	while(str[i] && !ft_isspace(str[i]))
-// 		i++;
-	// return()
-
-// }
-
-char *get_config_data(char *line)
+char *get_config_data(t_data *data, char *line)
 {
 	int i;
 	int len = ft_strlen(line);
@@ -92,7 +80,7 @@ char *get_config_data(char *line)
 	while(i < len && !ft_isspace(line[i]))
 		i++;
 	if(i == 0)
-		error_exit(ERR_IDENT);
+		error_exit(data, ERR_IDENT);
 	return(ft_strndup(line, i));
 }
 
@@ -118,21 +106,19 @@ void parse_line(char *line, t_data *data)
 	if(get_identifier(line) == ID_NO)
 	{
 		if(data->assets->NO_path == NULL)
-			data->assets->NO_path = get_config_data(line + 3);
+			data->assets->NO_path = get_config_data(data, line + 3);
 		else
 		{
-			printf("test\n");
-			error_exit(ERR_IDENT);
+			error_exit(data, ERR_IDENT);
 		}
 	}
 	if(get_identifier(line) == ID_SO)
 	{
 		if(data->assets->SO_path == NULL)
-			data->assets->SO_path = get_config_data(line + 3);
+			data->assets->SO_path = get_config_data(data, line + 3);
 		else
 		{
-			printf("test\n");
-			error_exit(ERR_IDENT);
+			error_exit(data, ERR_IDENT);
 
 		}
 	}

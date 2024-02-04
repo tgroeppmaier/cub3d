@@ -113,7 +113,7 @@ typedef struct s_data
 // void		free_map(t_map *map);
 // void		error_exit_map(int exit_code, t_map *map);
 // void		check_asset_error(t_data *image);
-void		error_exit(ErrorCode code);
+void		error_exit(t_data *data, ErrorCode code);
 
 /* 			parse_map.c */
 void		check_argument(int argc, char **argv);
