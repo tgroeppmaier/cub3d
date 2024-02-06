@@ -17,6 +17,7 @@ void free_file(t_data *data)
 	int i;
 	
 	i = -1;
+	free(data->file);
 	while(data->file_by_line[++i])
 	{
 		free(data->file_by_line[i]);

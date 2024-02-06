@@ -53,19 +53,28 @@ typedef enum {
 	ID_SO,
 	ID_WE,
 	ID_EA,
+	ID_F,
+	ID_C,
 	ID_UNKNOWN
 } Identifier;
 
-
+typedef struct s_color
+{
+	unsigned char red;
+	unsigned char green;
+	unsigned char blue;
+}			t_color;
 
 typedef struct s_map
 {
-	int		width;
-	int		height;
-	int		player_x;
-	int		player_y;
-	int		player_count;
-	char	player_direction;
+	// int		width;
+	// int		height;
+	// int		player_x;
+	// int		player_y;
+	// int		player_count;
+	// char	player_direction;
+	t_color floor;
+	t_color ceiling;
 	char	**data;
 }			t_map;
 
@@ -75,23 +84,18 @@ typedef struct s_asset
 	char	*SO_path;
 	char	*WE_path;
 	char	*EA_path;
-	void	*floor;
-	void	*coll;
-	void	*exit;
-	void	*pl;
-	void	*pl_ex;
 }			t_asset;
 
 typedef struct s_data
 {
-	void	*mxptr;
-	void	*mxwin;
-	void	*imgptr;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-	bool	exit_loop;
+	// void	*mxptr;
+	// void	*mxwin;
+	// void	*imgptr;
+	// char	*addr;
+	// int		bits_per_pixel;
+	// int		line_length;
+	// int		endian;
+	// bool	exit_loop;
 	char	*file;
 	char	**file_by_line;
 	t_asset	*assets;
@@ -114,12 +118,17 @@ typedef struct s_data
 // void		error_exit_map(int exit_code, t_map *map);
 // void		check_asset_error(t_data *image);
 void		error_exit(t_data *data, ErrorCode code);
+void 		free_assets(t_data *data);
+void 		free_file(t_data *data);
 
 /* 			parse_map.c */
 void		check_argument(int argc, char **argv);
 void		read_file(char *path, t_data *data);
 
 void		parse_file(t_data *data);
+
+/* 			debug.c		 */
+void 		print_data(t_data *data);
 
 
 #endif

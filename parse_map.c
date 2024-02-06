@@ -38,6 +38,8 @@ void	check_argument(int argc, char **argv)
 		printf("wrong filename! use .cub\n");
 		exit(1);
 	}
+	if (is_dir(argv[1]))
+		exit(1);
 }
 
 /*
@@ -51,13 +53,15 @@ void	read_file(char *path, t_data *data)
 	char *buffer;
 	char *tmp = NULL;
 
-	if (is_dir(path))
-		error_exit(data, ERR_FILE_IS_DIR);
-	
 	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if(!buffer)
 		error_exit(data, ERR_MALLOC);
 	data->file = ft_strdup("");
+	if(!data->file)
+	{
+		free(buffer);
+		error_exit(data, ERR_MALLOC);
+	}
 
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
@@ -88,6 +92,37 @@ bool ft_isspace(int c)
 	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r');
 }
 
+// void get_config_data(t_data *data, char *line, Identifier id)
+// {
+// 	int i = 0;
+// 	int len = ft_strlen(line);
+	
+// 	while(i < len && ft_isspace(line[i]))
+// 		i++;
+// 	while(i < len && !ft_isspace(line[i]))
+// 		i++;
+// 	if(i == 0)
+// 		error_exit(data, ERR_IDENT);
+	
+// 	char **path = NULL;
+	
+// 	if (id == ID_NO)
+// 		path = &(data->assets->NO_path);
+// 	else if (id == ID_SO)
+// 		path = &(data->assets->SO_path);
+// 	else if (id == ID_WE)
+// 		path = &(data->assets->WE_path);
+// 	else if (id == ID_EA)
+// 		path = &(data->assets->EA_path);
+// 	else
+// 		error_exit(data, ERR_IDENT);
+	
+// 	if(*path == NULL)
+// 		*path = ft_strndup(line, i);
+// 	else
+// 		error_exit(data, ERR_IDENT);
+// }
+
 char *get_config_data(t_data *data, char *line)
 {
 	int i;
@@ -100,13 +135,12 @@ char *get_config_data(t_data *data, char *line)
 		i++;
 	if(i == 0)
 		error_exit(data, ERR_IDENT);
+	
 	return(ft_strndup(line, i));
 }
 
 Identifier get_identifier(char *str)
 {
-	printf("%s\n", str);
-	
 	if(ft_strncmp(str, "NO ", 3) == 0)
 		return ID_NO;
 	if(ft_strncmp(str, "SO ", 3) == 0)
@@ -115,31 +149,88 @@ Identifier get_identifier(char *str)
 		return ID_WE;
 	if(ft_strncmp(str, "EA ", 3) == 0)
 		return ID_EA;
+	if(ft_strncmp(str, "F ", 2) == 0)
+		return ID_F;
+	if(ft_strncmp(str, "C ", 2) == 0)
+		return ID_F;
 	return ID_UNKNOWN;
+}
+
+long custom_strtol(const char *str, char **endptr) 
+{
+	long result = 0;
+	while (*str >= '0' && *str <= '9') {
+		result = result * 10 + (*str - '0');
+		str++;
+	}
+	if (endptr) {
+		*endptr = (char *)str;
+	}
+	return result;
 }
 
 void parse_line(char *line, t_data *data)
 {
-	while(*line && ft_isspace(*line))
+	while (*line && ft_isspace(*line))
 		line++;
-	if(get_identifier(line) == ID_NO)
+	Identifier id = get_identifier(line);
+	char **path = NULL;
+	if (id == ID_NO || id == ID_SO || id == ID_WE || id == ID_EA) 
 	{
-		if(data->assets->NO_path == NULL)
-			data->assets->NO_path = get_config_data(data, line + 3);
+		if (id == ID_NO)
+			path = &(data->assets->NO_path);
+		else if (id == ID_SO)
+			path = &(data->assets->SO_path);
+		else if (id == ID_WE)
+			path = &(data->assets->WE_path);
+		else if (id == ID_EA)
+			path = &(data->assets->EA_path);
+		else if (id == ID_F)
+			path = &(data->assets->EA_path);
+		else if (id == ID_EA)
+			path = &(data->assets->EA_path);
+		if (*path == NULL)
+			*path = get_config_data(data, line + 3);
 		else
-		{
 			error_exit(data, ERR_IDENT);
-		}
 	}
-	if(get_identifier(line) == ID_SO)
+	if(id == ID_F || id == ID_C)
 	{
-		if(data->assets->SO_path == NULL)
-			data->assets->SO_path = get_config_data(data, line + 3);
-		else
+		while (*line && ft_isspace(*line))
+			line++;
+		if(id == ID_F || id == ID_C)
 		{
-			error_exit(data, ERR_IDENT);
+			unsigned char red, green, blue;
+			char *endptr;
+			red = (unsigned char)custom_strtol(line, &endptr);
+			if (endptr == line || *endptr != ',') {
+				error_exit(data, ERR_IDENT);
+			}
 
+			line = endptr + 1;
+			green = (unsigned char)custom_strtol(line, &endptr);
+			if (endptr == line || *endptr != ',') {
+				error_exit(data, ERR_IDENT);
+			}
+
+			line = endptr + 1;
+			blue = (unsigned char)custom_strtol(line, &endptr);
+			if (endptr == line || (*endptr != '\0' && *endptr != '\n' && *endptr != '\r')) {
+				error_exit(data, ERR_IDENT);
+			}
+
+			if (id == ID_F) {
+				data->map->floor.red = red;
+				data->map->floor.green = green;
+				data->map->floor.blue = blue;
+			} else { // id == ID_C
+				data->map->ceiling.red = red;
+				data->map->ceiling.green = green;
+				data->map->ceiling.blue = blue;
+			}
 		}
+	// else 
+	// 	error_exit(data, ERR_IDENT);
 	}
 }
 
