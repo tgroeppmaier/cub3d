@@ -144,16 +144,17 @@ char *get_config_path(t_data *data, char *line)
 {
 	int i;
 	int len;
-	
+
 	i = 0;
 	len = ft_strlen(line);
-	while(i < len && ft_isspace(*line))
-		line++;
+	while(i < len && ft_isspace(line[i]))
+		i++;
+	int start = i;
 	while(i < len && !ft_isspace(line[i]))
 		i++;
-	if(i == 0)
+	if(i == start)
 		error_exit(data, ERR_IDENT);
-	return(ft_strndup(line, i));
+	return(ft_strndup(line + start, i - start));
 }
 
 void set_path(char *line, t_data *data, Identifier id)
