@@ -92,52 +92,6 @@ bool ft_isspace(int c)
 	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r');
 }
 
-// void get_config_data(t_data *data, char *line, Identifier id)
-// {
-// 	int i = 0;
-// 	int len = ft_strlen(line);
-	
-// 	while(i < len && ft_isspace(line[i]))
-// 		i++;
-// 	while(i < len && !ft_isspace(line[i]))
-// 		i++;
-// 	if(i == 0)
-// 		error_exit(data, ERR_IDENT);
-	
-// 	char **path = NULL;
-	
-// 	if (id == ID_NO)
-// 		path = &(data->assets->NO_path);
-// 	else if (id == ID_SO)
-// 		path = &(data->assets->SO_path);
-// 	else if (id == ID_WE)
-// 		path = &(data->assets->WE_path);
-// 	else if (id == ID_EA)
-// 		path = &(data->assets->EA_path);
-// 	else
-// 		error_exit(data, ERR_IDENT);
-	
-// 	if(*path == NULL)
-// 		*path = ft_strndup(line, i);
-// 	else
-// 		error_exit(data, ERR_IDENT);
-// }
-
-char *get_config_data(t_data *data, char *line)
-{
-	int i;
-	int len = ft_strlen(line);
-	
-	i = 0;
-	while(i < len && ft_isspace(line[i]))
-		i++;
-	while(i < len && !ft_isspace(line[i]))
-		i++;
-	if(i == 0)
-		error_exit(data, ERR_IDENT);
-	
-	return(ft_strndup(line, i));
-}
 
 Identifier get_identifier(char *str)
 {
@@ -153,6 +107,8 @@ Identifier get_identifier(char *str)
 		return ID_F;
 	if(ft_strncmp(str, "C ", 2) == 0)
 		return ID_F;
+	if(ft_strncmp(str, "1", 1) == 0)
+		return ID_MAP;
 	return ID_UNKNOWN;
 }
 
@@ -169,12 +125,42 @@ long custom_strtol(const char *str, char **endptr)
 	return result;
 }
 
-void parse_line(char *line, t_data *data)
+// unsigned char get_color_value(char *line, t_data *data)
+// {
+
+// }
+
+// void set_color_value(char *line, t_data *data, Identifier id)
+// {
+// 	while (*line && ft_isspace(*line))
+// 		line++;
+// 	if(id == ID_F)
+// 	{
+
+// 	}
+// }
+
+char *get_config_path(t_data *data, char *line)
 {
-	while (*line && ft_isspace(*line))
+	int i;
+	int len;
+	
+	i = 0;
+	len = ft_strlen(line);
+	while(i < len && ft_isspace(*line))
 		line++;
-	Identifier id = get_identifier(line);
-	char **path = NULL;
+	while(i < len && !ft_isspace(line[i]))
+		i++;
+	if(i == 0)
+		error_exit(data, ERR_IDENT);
+	return(ft_strndup(line, i));
+}
+
+void set_path(char *line, t_data *data, Identifier id)
+{
+	char **path;
+
+	path = NULL;
 	if (id == ID_NO || id == ID_SO || id == ID_WE || id == ID_EA) 
 	{
 		if (id == ID_NO)
@@ -190,58 +176,74 @@ void parse_line(char *line, t_data *data)
 		else if (id == ID_EA)
 			path = &(data->assets->EA_path);
 		if (*path == NULL)
-			*path = get_config_data(data, line + 3);
+			*path = get_config_path(data, line + 3);
 		else
 			error_exit(data, ERR_IDENT);
 	}
-	if(id == ID_F || id == ID_C)
-	{
-		while (*line && ft_isspace(*line))
-			line++;
-		if(id == ID_F || id == ID_C)
-		{
-			unsigned char red, green, blue;
-			char *endptr;
-			red = (unsigned char)custom_strtol(line, &endptr);
-			if (endptr == line || *endptr != ',') {
-				error_exit(data, ERR_IDENT);
-			}
 
-			line = endptr + 1;
-			green = (unsigned char)custom_strtol(line, &endptr);
-			if (endptr == line || *endptr != ',') {
-				error_exit(data, ERR_IDENT);
-			}
+}
 
-			line = endptr + 1;
-			blue = (unsigned char)custom_strtol(line, &endptr);
-			if (endptr == line || (*endptr != '\0' && *endptr != '\n' && *endptr != '\r')) {
-				error_exit(data, ERR_IDENT);
-			}
+void parse_line(char *line, t_data *data, Identifier id)
+{
+	if (id == ID_NO || id == ID_SO || id == ID_WE || id == ID_EA) 
+		set_path(line, data, id);
+	// if(id == ID_F || id == ID_C)
+	// {
+	// 	while (*line && ft_isspace(*line))
+	// 		line++;
+	// 	if(id == ID_F || id == ID_C)
+	// 	{
+	// 		unsigned char red, green, blue;
+	// 		char *endptr;
+	// 		red = (unsigned char)custom_strtol(line, &endptr);
+	// 		if (endptr == line || *endptr != ',') {
+	// 			error_exit(data, ERR_IDENT);
+	// 		}
 
-			if (id == ID_F) {
-				data->map->floor.red = red;
-				data->map->floor.green = green;
-				data->map->floor.blue = blue;
-			} else { // id == ID_C
-				data->map->ceiling.red = red;
-				data->map->ceiling.green = green;
-				data->map->ceiling.blue = blue;
-			}
-		}
+	// 		line = endptr + 1;
+	// 		green = (unsigned char)custom_strtol(line, &endptr);
+	// 		if (endptr == line || *endptr != ',') {
+	// 			error_exit(data, ERR_IDENT);
+	// 		}
+
+	// 		line = endptr + 1;
+	// 		blue = (unsigned char)custom_strtol(line, &endptr);
+	// 		if (endptr == line || (*endptr != '\0' && *endptr != '\n' && *endptr != '\r')) {
+	// 			error_exit(data, ERR_IDENT);
+	// 		}
+
+	// 		if (id == ID_F) {
+	// 			data->map->floor.red = red;
+	// 			data->map->floor.green = green;
+	// 			data->map->floor.blue = blue;
+	// 		} else { // id == ID_C
+	// 			data->map->ceiling.red = red;
+	// 			data->map->ceiling.green = green;
+	// 			data->map->ceiling.blue = blue;
+	// 		}
+	// 	}
 	// else 
 	// 	error_exit(data, ERR_IDENT);
-	}
+	// }
 }
+
+
 
 void	parse_config(t_data *data)
 {
 	int i = 0;	
-	// int j = 0;
-
+	Identifier id;
+	char *line;
+	
 	while(data->file_by_line[i])
 	{
-		parse_line(data->file_by_line[i], data);
+		line = data->file_by_line[i];
+		while (*line && ft_isspace(*line))
+			line++;	
+		id = get_identifier(line);
+		if(id == ID_UNKNOWN)
+			error_exit(data, ERR_IDENT);
+		parse_line(line, data, id);
 		i++;
 	}
 

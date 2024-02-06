@@ -55,6 +55,7 @@ typedef enum {
 	ID_EA,
 	ID_F,
 	ID_C,
+	ID_MAP,
 	ID_UNKNOWN
 } Identifier;
 

@@ -18,6 +18,7 @@ void free_file(t_data *data)
 	
 	i = -1;
 	free(data->file);
+	data->file = NULL;
 	while(data->file_by_line[++i])
 	{
 		free(data->file_by_line[i]);
@@ -43,7 +44,6 @@ void	error_exit(t_data *data, ErrorCode code)
 		printf("Identifier error\n");
 	free_file(data);
 	free_assets(data);
-	free(data->file);
 	exit(1);
 }
 
