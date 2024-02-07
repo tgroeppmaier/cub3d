@@ -42,6 +42,8 @@ void	error_exit(t_data *data, ErrorCode code)
 		printf("file too big\n");
 	else if(code == ERR_IDENT)
 		printf("Identifier error\n");
+	else if(code == ERR_FLOOR_CEILING)
+		printf("Floor / Ceiling error\n");
 	free_file(data);
 	free_assets(data);
 	exit(1);

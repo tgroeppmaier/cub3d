@@ -75,6 +75,8 @@ void	read_file(char *path, t_data *data)
 		tmp = ft_strjoin(data->file, buffer);
 		free(data->file);  // free the old string
 		data->file = ft_strdup(tmp);  // assign the new string
+		if(!data->file)
+			error_exit(data, ERR_MALLOC);
 		free(tmp);
 	}
 	if (bytes_read == -1)
@@ -106,39 +108,11 @@ Identifier get_identifier(char *str)
 	if(ft_strncmp(str, "F ", 2) == 0)
 		return ID_F;
 	if(ft_strncmp(str, "C ", 2) == 0)
-		return ID_F;
+		return ID_C;
 	if(ft_strncmp(str, "1", 1) == 0)
 		return ID_MAP;
 	return ID_UNKNOWN;
 }
-
-long custom_strtol(const char *str, char **endptr) 
-{
-	long result = 0;
-	while (*str >= '0' && *str <= '9') {
-		result = result * 10 + (*str - '0');
-		str++;
-	}
-	if (endptr) {
-		*endptr = (char *)str;
-	}
-	return result;
-}
-
-// unsigned char get_color_value(char *line, t_data *data)
-// {
-
-// }
-
-// void set_color_value(char *line, t_data *data, Identifier id)
-// {
-// 	while (*line && ft_isspace(*line))
-// 		line++;
-// 	if(id == ID_F)
-// 	{
-
-// 	}
-// }
 
 char *get_config_path(t_data *data, char *line)
 {
@@ -181,54 +155,81 @@ void set_path(char *line, t_data *data, Identifier id)
 		else
 			error_exit(data, ERR_IDENT);
 	}
-
 }
+
+/* converts char string to unsigned char, moves pointer and checks, if the pointer has moved.
+	returns value */
+
+unsigned char get_color_value(t_data *data, char **str) 
+{
+	int result;
+	char *test;
+
+	test = *str;
+	result = 0;
+	while (**str >= '0' && **str <= '9') 
+	{
+		result = result * 10 + (**str - '0');
+		if(result > 255)
+			error_exit(data, ERR_FLOOR_CEILING);
+		(*str)++;
+	}
+	if(*str == test)
+		error_exit(data, ERR_FLOOR_CEILING);
+	return((unsigned char)result);
+}
+
+void set_color_value(char *line, t_data *data, Identifier id)
+{
+	t_color *color;
+
+	if (id == ID_F) 
+		color = &(data->map->floor);
+	else
+		color = &(data->map->ceiling);
+	color->red = get_color_value(data, &line);
+	if (*line != ',')
+		error_exit(data, ERR_FLOOR_CEILING);
+	line++;
+	color->green = get_color_value(data, &line);
+	if (*line != ',')
+		error_exit(data, ERR_FLOOR_CEILING);
+	line++;
+	color->blue = get_color_value(data, &line);
+	while (ft_isspace(*line))
+		line++;
+	if (*line != '\0')
+		error_exit(data, ERR_FLOOR_CEILING);
+}
+
+/* when this function is called, *line points to the first character
+of the identifier. After the identifier are 1+n whitespaces */
 
 void parse_line(char *line, t_data *data, Identifier id)
 {
 	if (id == ID_NO || id == ID_SO || id == ID_WE || id == ID_EA) 
 		set_path(line, data, id);
-	// if(id == ID_F || id == ID_C)
-	// {
-	// 	while (*line && ft_isspace(*line))
-	// 		line++;
-	// 	if(id == ID_F || id == ID_C)
-	// 	{
-	// 		unsigned char red, green, blue;
-	// 		char *endptr;
-	// 		red = (unsigned char)custom_strtol(line, &endptr);
-	// 		if (endptr == line || *endptr != ',') {
-	// 			error_exit(data, ERR_IDENT);
-	// 		}
-
-	// 		line = endptr + 1;
-	// 		green = (unsigned char)custom_strtol(line, &endptr);
-	// 		if (endptr == line || *endptr != ',') {
-	// 			error_exit(data, ERR_IDENT);
-	// 		}
-
-	// 		line = endptr + 1;
-	// 		blue = (unsigned char)custom_strtol(line, &endptr);
-	// 		if (endptr == line || (*endptr != '\0' && *endptr != '\n' && *endptr != '\r')) {
-	// 			error_exit(data, ERR_IDENT);
-	// 		}
-
-	// 		if (id == ID_F) {
-	// 			data->map->floor.red = red;
-	// 			data->map->floor.green = green;
-	// 			data->map->floor.blue = blue;
-	// 		} else { // id == ID_C
-	// 			data->map->ceiling.red = red;
-	// 			data->map->ceiling.green = green;
-	// 			data->map->ceiling.blue = blue;
-	// 		}
-	// 	}
-	// else 
-	// 	error_exit(data, ERR_IDENT);
-	// }
+	else if(id == ID_F || id == ID_C)
+	{
+		while (*line && ft_isspace(*line)) // skip over whitespace before id
+			line++;
+		line++;
+		while (*line && ft_isspace(*line)) // skip over whitespace after id
+			line++;
+		set_color_value(line, data, id);
+	}
+	else if(id == ID_MAP)
+	{
+		// printf("map\n");
+	}
+	else 
+		error_exit(data, ERR_IDENT);
 }
 
 
+/* skips whitespace before the identifier by moving the pointer, 
+then checks, which identifier it is.
+ */
 
 void	parse_config(t_data *data)
 {
@@ -250,19 +251,18 @@ void	parse_config(t_data *data)
 
 }
 
-
 /* splits the file into lines and saves the ** in data->file */
 
 void parse_file(t_data *data)
 {
-    // int i = 0;
-
     if(data->file == NULL)
 	{
 		printf("file not read\n");
 		exit(1);
 	}
 	data->file_by_line = ft_split(data->file, '\n');
+	if (data->file_by_line == NULL)
+		error_exit(data, ERR_USAGE);
 	parse_config(data);
     // while (data->file[i])
     // {
