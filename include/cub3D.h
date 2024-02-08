@@ -75,6 +75,7 @@ typedef struct s_map
 	// int		player_y;
 	// int		player_count;
 	// char		player_direction;
+	int			line_start;
 	t_color 	ceiling;
 	t_color 	floor;
 	char		**data;
@@ -124,11 +125,14 @@ void 		free_assets(t_data *data);
 void 		free_file(t_data *data);
 void		print_error_exit(t_data *data, char *message);
 
-/* 			parse_map.c */
+/* 			parse_file.c */
 void		check_argument(int argc, char **argv);
 void		read_file(char *path, t_data *data);
-
 void		parse_file(t_data *data);
+bool 		ft_isspace(int c);
+
+/* 			parse_map.c */
+void		check_invalid_char(char *line, t_data *data);
 
 /* 			debug.c		 */
 void 		print_data(t_data *data);

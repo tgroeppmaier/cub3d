@@ -38,3 +38,14 @@ ctest --output-on-failure --test-dir build
 
 #### Parse Map
 - [ ] after all identifiers succesful, start reading map
+- [ ] check for invalid characters
+##### get map dimensions
+- [ ] skip whitespace in the beginning
+- [ ] find lenght of longest line
+
+
+
+### Status
+worked on getting initial whitespace of the map part, but need different approach
+due to the whitespace already been skipped when the check_invalid_char function is 
+called. Need to check if there is whitespace skipped again unnecessarily

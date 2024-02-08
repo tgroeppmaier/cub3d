@@ -18,6 +18,7 @@ void print_map(t_map *map)
 	print_color(map->floor);
 	printf("Ceiling color: ");
 	print_color(map->ceiling);
+	printf("line_start = %d\n", map->line_start);
 	// Add code here to print the map data if needed
 }
 

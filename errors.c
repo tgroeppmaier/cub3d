@@ -52,6 +52,8 @@ void	error_exit(t_data *data, ErrorCode code)
 		printf("Identifier error\n");
 	else if(code == ERR_FLOOR_CEILING)
 		printf("Floor / Ceiling error\n");
+	else if(code == ERR_INVALID_MAP)
+		printf("Invalid Map\n");
 	free_file(data);
 	free_assets(data);
 	exit(1);
