@@ -61,9 +61,12 @@ typedef enum {
 
 typedef struct s_color
 {
-	unsigned char red;
-	unsigned char green;
-	unsigned char blue;
+	unsigned char 	red;
+	unsigned char 	green;
+	unsigned char 	blue;
+	bool			red_ok;
+	bool			green_ok;
+	bool			blue_ok;
 }			t_color;
 
 typedef struct s_map
@@ -73,11 +76,11 @@ typedef struct s_map
 	// int		player_x;
 	// int		player_y;
 	// int		player_count;
-	// char	player_direction;
-	t_color floor;
-	t_color ceiling;
-	char	**data;
-}			t_map;
+	// char		player_direction;
+	t_color 	ceiling;
+	t_color 	floor;
+	char		**data;
+}				t_map;
 
 typedef struct s_asset
 {
