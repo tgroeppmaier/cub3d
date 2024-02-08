@@ -179,6 +179,8 @@ unsigned char get_color_value(t_data *data, char **str)
 	return((unsigned char)result);
 }
 
+/* checks, if the color is already set. if not, it sets the color values */
+
 void set_color_value(char *line, t_data *data, Identifier id)
 {
 	t_color *color;
@@ -187,6 +189,8 @@ void set_color_value(char *line, t_data *data, Identifier id)
 		color = &(data->map->floor);
 	else
 		color = &(data->map->ceiling);
+	if(color->color_ok == true)
+		print_error_exit(data, "color duplicate");
 	color->red = get_color_value(data, &line);
 	if (*line != ',')
 		error_exit(data, ERR_FLOOR_CEILING);
@@ -200,6 +204,7 @@ void set_color_value(char *line, t_data *data, Identifier id)
 		line++;
 	if (*line != '\0')
 		error_exit(data, ERR_FLOOR_CEILING);
+	color->color_ok = true;
 }
 
 /* when this function is called, *line points to the first character

@@ -64,9 +64,7 @@ typedef struct s_color
 	unsigned char 	red;
 	unsigned char 	green;
 	unsigned char 	blue;
-	bool			red_ok;
-	bool			green_ok;
-	bool			blue_ok;
+	bool			color_ok;
 }			t_color;
 
 typedef struct s_map
@@ -124,6 +122,7 @@ typedef struct s_data
 void		error_exit(t_data *data, ErrorCode code);
 void 		free_assets(t_data *data);
 void 		free_file(t_data *data);
+void		print_error_exit(t_data *data, char *message);
 
 /* 			parse_map.c */
 void		check_argument(int argc, char **argv);

@@ -1,4 +1,13 @@
-#include "include/cub3D.h"
+#include "cub3D.h"
+
+void check_config(t_data *data)
+{
+	if(!data->assets->NO_path || !data->assets->SO_path || !data->assets->WE_path || !data->assets->EA_path)
+		print_error_exit(data, "config path error");
+	if(!data->map->ceiling.color_ok || !data->map->floor.color_ok)
+		print_error_exit(data, "color error");
+}
+
 
 void initialization(t_data* data, t_asset* assets, t_map* map)
 {
@@ -7,12 +16,8 @@ void initialization(t_data* data, t_asset* assets, t_map* map)
 	ft_memset(map, 0, sizeof(*map));
 	data->map = map;
 	data->assets = assets;
-	map->ceiling.red_ok = false;
-	map->ceiling.green_ok = false;
-	map->ceiling.blue_ok = false;
-	map->floor.red_ok = false;
-	map->floor.green_ok = false;
-	map->floor.blue_ok = false;
+	map->ceiling.color_ok = false;
+	map->floor.color_ok = false;
 }
 
 int main(int argc, char **argv)
@@ -26,6 +31,7 @@ int main(int argc, char **argv)
 	read_file(argv[1], &data);
 	// printf("%s\n", data.buffer);
 	parse_file(&data);
+	check_config(&data);
 	print_data(&data);
 	free_file(&data);
 	free_assets(&data);

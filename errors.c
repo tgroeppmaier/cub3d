@@ -28,6 +28,14 @@ void free_file(t_data *data)
 	data->file_by_line = NULL;
 }
 
+void	print_error_exit(t_data *data, char *message)
+{
+	printf("%s\n", message);
+	free_file(data);
+	free_assets(data);
+	exit(1);
+}
+
 void	error_exit(t_data *data, ErrorCode code)
 {
 	if(code == ERR_FILE_NOT_CUB)

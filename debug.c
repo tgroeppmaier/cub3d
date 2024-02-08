@@ -9,7 +9,7 @@
 void print_color(t_color color) 
 {
 	printf("Red: %u, Green: %u, Blue: %u\n", color.red, color.green, color.blue);
-	printf("R_OK: %s, G_OK: %s, B_OK: %s\n", color.red_ok ? "true" : "false", color.green_ok ? "true" : "false", color.blue_ok ? "true" : "false");
+	printf("color_ok: %d\n", color.color_ok);
 }
 
 void print_map(t_map *map) 
