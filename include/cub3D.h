@@ -137,5 +137,8 @@ void		check_invalid_char(char *line, t_data *data);
 /* 			debug.c		 */
 void 		print_data(t_data *data);
 
+/* 			checks.c	 */
+void 		check_config(t_data *data);
+
 
 #endif

@@ -216,8 +216,6 @@ void parse_line(char *line, t_data *data, Identifier id)
 		set_path(line, data, id);
 	else if(id == ID_F || id == ID_C)
 	{
-		// while (*line && ft_isspace(*line)) // skip over whitespace before id
-		// 	line++;
 		line++;
 		while (*line && ft_isspace(*line)) // skip over whitespace after id
 			line++;
