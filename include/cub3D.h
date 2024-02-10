@@ -75,7 +75,9 @@ typedef struct s_map
 	// int		player_y;
 	// int		player_count;
 	// char		player_direction;
-	int			line_start;
+	bool		map_parsing;	// indicates, if map parsing has started
+	int			max_line_length;
+	int			nbr_lines;
 	t_color 	ceiling;
 	t_color 	floor;
 	char		**data;
@@ -124,6 +126,7 @@ void		error_exit(t_data *data, ErrorCode code);
 void 		free_assets(t_data *data);
 void 		free_file(t_data *data);
 void		print_error_exit(t_data *data, char *message);
+void		free_array(char **array);
 
 /* 			parse_file.c */
 void		check_argument(int argc, char **argv);

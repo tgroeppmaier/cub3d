@@ -1,11 +1,5 @@
 #include "include/cub3D.h"
 
-// void print_color(t_color color) 
-// {
-// 	printf("Red: %u, Green: %u, Blue: %u\n", color.red, color.green, color.blue);
-// 	printf("Red OK: %d, Green OK: %d, Blue OK: %d\n", color.red_ok, color.green_ok, color.blue_ok);
-// }
-
 void print_color(t_color color) 
 {
 	printf("Red: %u, Green: %u, Blue: %u\n", color.red, color.green, color.blue);
@@ -18,8 +12,8 @@ void print_map(t_map *map)
 	print_color(map->floor);
 	printf("Ceiling color: ");
 	print_color(map->ceiling);
-	printf("line_start = %d\n", map->line_start);
-	// Add code here to print the map data if needed
+	printf("max line length = %d\n", map->max_line_length);
+	printf("number of lines: %d\n", map->nbr_lines);
 }
 
 void print_asset(t_asset *asset) 
@@ -33,7 +27,12 @@ void print_asset(t_asset *asset)
 void print_data(t_data *data)
 {
 	// printf("File: %s\n", data->file);
-	// Add code here to print the file_by_line if needed
 	print_asset(data->assets);
 	print_map(data->map);
+	char **temp = data->file_by_line;
+	while(*temp)
+	{
+		printf("%s\n", *temp);
+		temp++;
+	}
 }

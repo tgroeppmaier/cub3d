@@ -28,6 +28,20 @@ void free_file(t_data *data)
 	data->file_by_line = NULL;
 }
 
+void free_array(char **array)
+{
+	int i;
+	
+	i = -1;
+	while(array[++i])
+	{
+		free(array[i]);
+		array[i] = NULL;
+	}
+	free(array);
+	array = NULL;
+}
+
 void	print_error_exit(t_data *data, char *message)
 {
 	printf("%s\n", message);

@@ -91,12 +91,14 @@ void	read_file(char *path, t_data *data)
 
 bool ft_isspace(int c) 
 {
-	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r');
+	return (c == ' ' || c == '\t' || c == '\v' || c == '\f' || c == '\r');
 }
 
 
 Identifier get_identifier(char *str)
 {
+	while (*str && ft_isspace(*str))
+		str++;	
 	if(ft_strncmp(str, "NO ", 3) == 0)
 		return ID_NO;
 	if(ft_strncmp(str, "SO ", 3) == 0)
@@ -185,6 +187,7 @@ void set_color_value(char *line, t_data *data, Identifier id)
 {
 	t_color *color;
 
+
 	if (id == ID_F) 
 		color = &(data->map->floor);
 	else
@@ -208,21 +211,33 @@ void set_color_value(char *line, t_data *data, Identifier id)
 }
 
 /* when this function is called, *line points to the first character
-of the identifier. After the identifier are 1+n whitespaces */
+of the line. After the identifier are 1+n whitespaces */
 
 void parse_line(char *line, t_data *data, Identifier id)
 {
-	if (id == ID_NO || id == ID_SO || id == ID_WE || id == ID_EA) 
+	if (id == ID_NO || id == ID_SO || id == ID_WE || id == ID_EA)
+	{
+		if(data->map->map_parsing == true)
+			print_error_exit(data, "Error\n wrong order\n");
+		while(*line && ft_isspace(*line))
+			line++;
 		set_path(line, data, id);
+	}
 	else if(id == ID_F || id == ID_C)
 	{
-		line++;
+		if(data->map->map_parsing == true)
+			print_error_exit(data, "Error\n wrong order\n");
+		while (*line && ft_isspace(*line)) // skip over whitespace before id
+			line++;
+		line++;	// skip over id
 		while (*line && ft_isspace(*line)) // skip over whitespace after id
 			line++;
 		set_color_value(line, data, id);
 	}
 	else if(id == ID_MAP)
 	{
+		check_config(data);
+		data->map->map_parsing = true;
 		check_invalid_char(line, data);
 	}
 	else 
@@ -230,8 +245,7 @@ void parse_line(char *line, t_data *data, Identifier id)
 }
 
 
-/* skips whitespace before the identifier by moving the pointer, 
-then checks, which identifier it is. if it is unknown, it could be the map.
+/* checks, which identifier it is. if it is unknown, it could be the map.
  */
 
 void	parse_config(t_data *data)
@@ -243,8 +257,6 @@ void	parse_config(t_data *data)
 	while(data->file_by_line[i])
 	{
 		line = data->file_by_line[i];
-		while (*line && ft_isspace(*line))
-			line++;	
 		id = get_identifier(line);
 		if(id == ID_UNKNOWN)
 			error_exit(data, ERR_IDENT);
