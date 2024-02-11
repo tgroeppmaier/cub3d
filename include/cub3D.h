@@ -80,7 +80,8 @@ typedef struct s_map
 	int			nbr_lines;
 	t_color 	ceiling;
 	t_color 	floor;
-	char		**data;
+	char		**map_arr;
+	// char		**data;
 }				t_map;
 
 typedef struct s_asset
@@ -133,9 +134,11 @@ void		check_argument(int argc, char **argv);
 void		read_file(char *path, t_data *data);
 void		parse_file(t_data *data);
 bool 		ft_isspace(int c);
+Identifier 	get_identifier(char *str);
 
 /* 			parse_map.c */
 void		check_invalid_char(char *line, t_data *data);
+void		create_map(t_data *data);
 
 /* 			debug.c		 */
 void 		print_data(t_data *data);

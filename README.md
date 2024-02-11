@@ -84,7 +84,12 @@ ctest --output-on-failure --test-dir build
 worked on getting initial whitespace of the map part, but need different approach
 due to the whitespace already been skipped when the check_invalid_char function is called. Need to check if there is whitespace skipped again unnecessarily
 
-10.02.  
-create_map function needs to start reading from the map part of the file
+10.02.
+
+- create_map function needs to start reading from the map part of the file
+
+11.02.
+
+- finish create map and map check
 
 ### progress

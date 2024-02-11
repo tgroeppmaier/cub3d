@@ -8,12 +8,26 @@ void print_color(t_color color)
 
 void print_map(t_map *map) 
 {
+	char **tmp;
+	
+	tmp = map->map_arr;
+	if(!tmp)
+	{
+		printf("map array == NULL\n");
+		exit(1);
+	}
 	printf("Floor color: ");
 	print_color(map->floor);
 	printf("Ceiling color: ");
 	print_color(map->ceiling);
 	printf("max line length = %d\n", map->max_line_length);
 	printf("number of lines: %d\n", map->nbr_lines);
+	while(*tmp)
+	{
+		printf("%s\n", *tmp);
+		tmp++;
+	}
+	free_array(map->map_arr);
 }
 
 void print_asset(t_asset *asset) 
