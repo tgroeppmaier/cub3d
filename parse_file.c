@@ -1,99 +1,4 @@
-#include "include/cub3D.h"
-#include <fcntl.h>
-
-static bool	is_dir(char *path)
-{
-	int		fd;
-	bool	ret;
-
-	ret = false;
-	fd = open(path, O_DIRECTORY);
-	if (fd >= 0)
-	{
-		close (fd);
-		ret = true;
-	}
-	return (ret);
-}
-
-void	check_argument(int argc, char **argv)
-{
-	int	len;
-
-	if (argc != 2)
-	{
-		printf("Error\n");
-		printf("usage: ./cub3D mapname.cub\n");
-		exit(1);
-	}
-	len = ft_strlen(argv[1]);
-	if (len < 4)
-	{
-		printf("filename too short\n");
-		exit(1);
-	}
-	if (ft_strncmp(argv[1] + len - 4, ".cub", 4) != 0)
-	{
-		printf("Error\n");
-		printf("wrong filename! use .cub\n");
-		exit(1);
-	}
-	if (is_dir(argv[1]))
-		exit(1);
-}
-
-/*
-	opens file and reads it into data->file.
-*/
-
-void	read_file(char *path, t_data *data)
-{
-	int	fd;
-	int	bytes_read;
-	char *buffer;
-	char *tmp = NULL;
-
-	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if(!buffer)
-		error_exit(data, ERR_MALLOC);
-	data->file = ft_strdup("");
-	if(!data->file)
-	{
-		free(buffer);
-		error_exit(data, ERR_MALLOC);
-	}
-
-	fd = open(path, O_RDONLY);
-	if (fd == -1)
-	{
-		free(buffer);
-		error_exit(data, ERR_FILE_OPEN);
-	}
-	while((bytes_read = read(fd, buffer, BUFFER_SIZE)) > 0)
-	{
-		buffer[bytes_read] = '\0';
-		tmp = ft_strjoin(data->file, buffer);
-		free(data->file);  // free the old string
-		data->file = ft_strdup(tmp);  // assign the new string
-		if(!data->file)
-			error_exit(data, ERR_MALLOC);
-		free(tmp);
-	}
-	if (bytes_read == -1)
-	{
-		free(buffer);
-		close(fd);
-		error_exit(data, ERR_FILE_READ);
-	}
-	close(fd);
-	free(buffer);  // free the buffer
-}
-
-bool ft_isspace(int c) 
-{
-	return (c == ' ' || c == '\t' || c == '\v' || c == '\f' || c == '\r');
-}
-
+#include "cub3D.h"
 
 Identifier get_identifier(char *str)
 {
@@ -146,10 +51,6 @@ void set_path(char *line, t_data *data, Identifier id)
 			path = &(data->assets->SO_path);
 		else if (id == ID_WE)
 			path = &(data->assets->WE_path);
-		else if (id == ID_EA)
-			path = &(data->assets->EA_path);
-		else if (id == ID_F)
-			path = &(data->assets->EA_path);
 		else if (id == ID_EA)
 			path = &(data->assets->EA_path);
 		if (*path == NULL)
@@ -244,16 +145,23 @@ void parse_line(char *line, t_data *data, Identifier id)
 		error_exit(data, ERR_IDENT);
 }
 
+/* splits the file into lines and saves the ** in data->file 
+checks, which identifier it is. if it is unknown, it could be the map. */
 
-/* checks, which identifier it is. if it is unknown, it could be the map.
- */
-
-void	parse_config(t_data *data)
+void parse_file(t_data *data)
 {
 	int i = 0;	
 	Identifier id;
 	char *line;
-	
+
+    if(data->file == NULL)
+	{
+		printf("file not read\n");
+		exit(1);
+	}
+	data->file_by_line = ft_split(data->file, '\n');
+	if (data->file_by_line == NULL)
+		error_exit(data, ERR_USAGE);
 	while(data->file_by_line[i])
 	{
 		line = data->file_by_line[i];
@@ -263,26 +171,5 @@ void	parse_config(t_data *data)
 		parse_line(line, data, id);
 		i++;
 	}
-
-}
-
-/* splits the file into lines and saves the ** in data->file */
-
-void parse_file(t_data *data)
-{
-    if(data->file == NULL)
-	{
-		printf("file not read\n");
-		exit(1);
-	}
-	data->file_by_line = ft_split(data->file, '\n');
-	if (data->file_by_line == NULL)
-		error_exit(data, ERR_USAGE);
-	parse_config(data);
-    // while (data->file[i])
-    // {
-    //     printf("%s\n", data->file[i]);
-    //     i++;
-    // }
 }
 

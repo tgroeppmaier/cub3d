@@ -130,20 +130,22 @@ void		print_error_exit(t_data *data, char *message);
 void		free_array(char **array);
 
 /* 			parse_file.c */
-void		check_argument(int argc, char **argv);
-void		read_file(char *path, t_data *data);
 void		parse_file(t_data *data);
-bool 		ft_isspace(int c);
 Identifier 	get_identifier(char *str);
 
-/* 			parse_map.c */
+/* 			read_file.c			*/
+void		check_argument(int argc, char **argv);
+void		read_file(char *path, t_data *data);
+bool 		ft_isspace(int c);
+
+/* 			parse_map.c			*/
 void		check_invalid_char(char *line, t_data *data);
 void		create_map(t_data *data);
 
-/* 			debug.c		 */
+/* 			debug.c		 		*/
 void 		print_data(t_data *data);
 
-/* 			checks.c	 */
+/* 			checks.c	 		*/
 void 		check_config(t_data *data);
 
 
