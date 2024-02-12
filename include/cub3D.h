@@ -75,6 +75,8 @@ typedef struct s_map
 	// int		player_y;
 	// int		player_count;
 	// char		player_direction;
+	int			line_map_start;
+	char		**map_start;
 	bool		map_parsing;	// indicates, if map parsing has started
 	int			max_line_length;
 	int			nbr_lines;
@@ -147,6 +149,9 @@ void 		print_data(t_data *data);
 
 /* 			checks.c	 		*/
 void 		check_config(t_data *data);
+bool		validate_map(t_data *data);
+
+/* 			map_check.c */
 
 
 #endif

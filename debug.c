@@ -8,6 +8,7 @@ void print_color(t_color color)
 
 void print_map(t_map *map) 
 {
+	int i = 0;
 	char **tmp;
 	
 	tmp = map->map_arr;
@@ -22,11 +23,21 @@ void print_map(t_map *map)
 	print_color(map->ceiling);
 	printf("max line length = %d\n", map->max_line_length);
 	printf("number of lines: %d\n", map->nbr_lines);
-	while(*tmp)
+	// while(*tmp)
+	// {
+	// 	printf("%s\n", *tmp);
+	// 	tmp++;
+	// }
+	while(map->map_arr[i])
 	{
-		printf("%s\n", *tmp);
-		tmp++;
+		printf("%s\n", map->map_arr[i]);
+		i++;
 	}
+	// while(map->map_start[i])
+	// {
+	// 	printf("%s\n", map->map_start[i]);
+	// 	i++;
+	// }
 	free_array(map->map_arr);
 }
 
@@ -43,10 +54,10 @@ void print_data(t_data *data)
 	// printf("File: %s\n", data->file);
 	print_asset(data->assets);
 	print_map(data->map);
-	char **temp = data->file_by_line;
-	while(*temp)
-	{
-		printf("%s\n", *temp);
-		temp++;
-	}
+	// char **temp = data->file_by_line;
+	// while(*temp)
+	// {
+	// 	printf("%s\n", *temp);
+	// 	temp++;
+	// }
 }

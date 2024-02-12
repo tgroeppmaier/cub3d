@@ -168,6 +168,11 @@ void parse_file(t_data *data)
 		id = get_identifier(line);
 		if(id == ID_UNKNOWN)
 			error_exit(data, ERR_IDENT);
+		if(id == ID_MAP && data->map->map_parsing == false)
+		{
+			data->map->map_start = data->file_by_line + i;
+			data->map->line_map_start = i; 
+		}
 		parse_line(line, data, id);
 		i++;
 	}

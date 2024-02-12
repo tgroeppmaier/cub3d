@@ -1,88 +1,63 @@
 #include "cub3D.h"
 
-/* first check, if the map part contains any other than the allowded character.
-	only checks lines, that start with 1 */
-
-void check_invalid_char(char *line, t_data *data)
+char *create_boundary_line(int line_length)
 {
-	int i;
-
-	i = 0;
-	while(line && ft_isspace(line[i]))
-	{
-		line[i] = '1';
-		i++;
-	}
-	while(line[i])
-	{
-		if(line[i] == ' ')
-			line[i] = '1';
-		if(line[i] != '0' && line[i] != '1' && line[i] != 'N' && line[i] != 'S' && line[i] != 'E' && line[i] != 'W')
-			error_exit(data, ERR_INVALID_MAP);
-		i++;
-	}
-	data->map->nbr_lines++;
-	if (i > data->map->max_line_length)
-		data->map->max_line_length = i;
-
-}
-
-/*  Finds the line number where the map content starts */
-
-int find_map_start(t_data *data)
-{
-	int i;
-	Identifier id;
-
-	i = 0;
-	while(data->file_by_line[i])
-	{
-		id = get_identifier(data->file_by_line[i]);
-		if(id == ID_MAP)
-			break;
-		i++;
-	}
-	return i;
-}
-
-/*  Allocates and initializes a map line  */
-
-char *create_map_line(t_data* data, int index, int line_length)
-{
-	int remaining_len;
-	
 	char* line = (char *)malloc((line_length + 1) * sizeof(char));
 	if (!line)
 	{
 		return NULL;
 	}
-	ft_strlcpy(line, data->file_by_line[index], line_length);
-	remaining_len = line_length - ft_strlen(line);
-	ft_memset(line + ft_strlen(line), '1', remaining_len);
+	ft_memset(line, 'x', line_length);
 	line[line_length] = '\0';
 	return line;
 }
 
-/*  Creates the map from the file content */
+char *create_map_line(t_data* data, int index, int line_length)
+{
+	int remaining_len;
+	int j;
+	
+	char *line = (char *)malloc((line_length + 1) * sizeof(char));
+	if (!line)
+	{
+		return NULL;
+	}
+	line[0] = 'x';
+	ft_strlcpy(line + 1, data->map->map_start[index], line_length - 1);
+	remaining_len = line_length - ft_strlen(line);
+	ft_memset(line + ft_strlen(line), 'x', remaining_len);
+	line[line_length - 1] = 'x';
+	line[line_length] = '\0';
+
+	// Replace all spaces with 'x'
+	j = 0;
+	while (line[j])
+	{
+		if (line[j] == ' ')
+			line[j] = 'x';
+		j++;
+	}
+
+	return line;
+}
 
 void create_map(t_data *data)
 {
 	int i;
 	int map_width;
 	int map_height;
-	int start_line;
 
 	i = 0;
-	map_width = data->map->max_line_length;
-	map_height = data->map->nbr_lines;
-	start_line = find_map_start(data);
+	map_width = data->map->max_line_length + 2;
+	map_height = data->map->nbr_lines + 2;
 	char **map = (char **)malloc((map_height + 1) * sizeof(char *));
 	if (!map)
 		return; // todo
-	while(i < map_height)
+	map[0] = create_boundary_line(map_width);
+	while(i < map_height - 2)
 	{
-		map[i] = create_map_line(data, start_line + i, map_width);
-		if (!map[i])
+		map[i + 1] = create_map_line(data, i, map_width);
+		if (!map[i + 1])
 		{
 			while (--i >= 0)
 				free(map[i]);
@@ -91,6 +66,10 @@ void create_map(t_data *data)
 		}
 		i++;
 	}
+	map[map_height - 1] = create_boundary_line(map_width);
 	map[map_height] = NULL;
 	data->map->map_arr = map;
+
+	if(!validate_map(data))
+		print_error_exit(data, "Error\nMap not surrounded by walls\n");
 }

@@ -91,5 +91,6 @@ due to the whitespace already been skipped when the check_invalid_char function 
 11.02.
 
 - finish create map and map check
+- test map borders,
 
 ### progress
