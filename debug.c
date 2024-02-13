@@ -23,6 +23,7 @@ void print_map(t_map *map)
 	print_color(map->ceiling);
 	printf("max line length = %d\n", map->max_line_length);
 	printf("number of lines: %d\n", map->nbr_lines);
+	printf("player count: %d\n", map->p_count);
 	// while(*tmp)
 	// {
 	// 	printf("%s\n", *tmp);

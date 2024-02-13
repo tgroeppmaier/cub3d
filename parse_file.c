@@ -88,13 +88,12 @@ void set_color_value(char *line, t_data *data, Identifier id)
 {
 	t_color *color;
 
-
 	if (id == ID_F) 
 		color = &(data->map->floor);
 	else
 		color = &(data->map->ceiling);
 	if(color->color_ok == true)
-		print_error_exit(data, "color duplicate");
+		print_error_exit(data, "Error\nColor duplicate");
 	color->red = get_color_value(data, &line);
 	if (*line != ',')
 		error_exit(data, ERR_FLOOR_CEILING);
@@ -136,33 +135,27 @@ void parse_line(char *line, t_data *data, Identifier id)
 		set_color_value(line, data, id);
 	}
 	else if(id == ID_MAP)
-	{
-		check_config(data);
-		data->map->map_parsing = true;
 		check_invalid_char(line, data);
-	}
 	else 
 		error_exit(data, ERR_IDENT);
 }
 
 /* splits the file into lines and saves the ** in data->file 
-checks, which identifier it is. if it is unknown, it could be the map. */
+checks, which identifier it is. */
 
 void parse_file(t_data *data)
 {
-	int i = 0;	
+	int i;
 	Identifier id;
 	char *line;
 
+	i = -1;	
     if(data->file == NULL)
-	{
-		printf("file not read\n");
-		exit(1);
-	}
+		print_error_exit(data, "Error\nFile not read");
 	data->file_by_line = ft_split(data->file, '\n');
 	if (data->file_by_line == NULL)
 		error_exit(data, ERR_USAGE);
-	while(data->file_by_line[i])
+	while(data->file_by_line[++i])
 	{
 		line = data->file_by_line[i];
 		id = get_identifier(line);
@@ -170,11 +163,11 @@ void parse_file(t_data *data)
 			error_exit(data, ERR_IDENT);
 		if(id == ID_MAP && data->map->map_parsing == false)
 		{
+			data->map->map_parsing = true;
 			data->map->map_start = data->file_by_line + i;
-			data->map->line_map_start = i; 
+			check_config(data);
 		}
 		parse_line(line, data, id);
-		i++;
 	}
 }
 

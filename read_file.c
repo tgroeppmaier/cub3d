@@ -29,6 +29,8 @@ void	check_argument(int argc, char **argv)
 
 int prepare_file(char *path, t_data *data, char **buffer)
 {
+	int fd;
+
 	*buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if(!*buffer)
 		print_error_exit(data, "Error\nFailed to allocate memory for buffer");
@@ -38,7 +40,7 @@ int prepare_file(char *path, t_data *data, char **buffer)
 		free(*buffer);
 		print_error_exit(data, "Error\nFailed to duplicate string for file data");
 	}
-	int fd = open(path, O_RDONLY);
+	fd = open(path, O_RDONLY);
 	if (fd == -1)
 	{
 		free(*buffer);
@@ -76,6 +78,8 @@ void read_and_concatenate(int fd, t_data *data, char *buffer)
 void read_file(char *path, t_data *data)
 {
 	char *buffer;
-	int fd = prepare_file(path, data, &buffer);
+	int fd;
+	
+	fd = prepare_file(path, data, &buffer);
 	read_and_concatenate(fd, data, buffer);
 }

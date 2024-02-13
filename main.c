@@ -9,6 +9,8 @@ void initialization(t_data* data, t_asset* assets, t_map* map)
 	ft_memset(map, 0, sizeof(*map));
 	data->map = map;
 	data->assets = assets;
+	// data->map->max_line_length = 2;
+	// data->map->nbr_lines = 2;
 }
 
 int main(int argc, char **argv)
@@ -23,6 +25,7 @@ int main(int argc, char **argv)
 	parse_file(&data);
 	check_config(&data);
 	create_map(&data);
+	validate_map(&data);
 	print_data(&data);
 	free_file(&data);
 	free_assets(&data);
