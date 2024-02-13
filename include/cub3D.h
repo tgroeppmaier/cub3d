@@ -71,17 +71,16 @@ typedef struct s_map
 {
 	// int		width;
 	// int		height;
-	// int		player_x;
-	// int		player_y;
-	// int		player_count;
-	// char		player_direction;
+	int			player_x;
+	int			player_y;
+	char		player_direction;
 	int			p_count;
-	char		**map_start;
-	bool		map_parsing;	// indicates, if map parsing has started
 	int			max_line_length;
 	int			nbr_lines;
 	t_color 	ceiling;
 	t_color 	floor;
+	bool		map_parsing;	// indicates, if map parsing has started
+	char		**map_start; // pointer to the map part of file_by_line
 	char		**map_arr;
 	// char		**data;
 }				t_map;

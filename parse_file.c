@@ -145,9 +145,9 @@ checks, which identifier it is. */
 
 void parse_file(t_data *data)
 {
-	int i;
-	Identifier id;
-	char *line;
+	int 		i;
+	Identifier	id;
+	char		*line;
 
 	i = -1;	
     if(data->file == NULL)

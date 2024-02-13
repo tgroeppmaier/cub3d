@@ -32,6 +32,8 @@ void free_array(char **array)
 {
 	int i;
 	
+	if(!array)
+		return;
 	i = -1;
 	while(array[++i])
 	{
@@ -47,6 +49,7 @@ void	print_error_exit(t_data *data, char *message)
 	printf("%s\n", message);
 	free_file(data);
 	free_assets(data);
+	free_array(data->map->map_arr);
 	exit(1);
 }
 
@@ -73,79 +76,3 @@ void	error_exit(t_data *data, ErrorCode code)
 	exit(1);
 }
 
-// void	error_exit_read(int exit_code)
-// {
-// 	if (exit_code == 1)
-// 	{
-// 		ft_putstr("Error\n");
-// 		perror("open");
-// 	}
-// 	else if (exit_code == 2)
-// 	{
-// 		ft_putstr("Error\n");
-// 		perror("read");
-// 	}
-// 	else if (exit_code == 3)
-// 		ft_putstr("Error\nmap too small\n");
-// 	else if (exit_code == 4)
-// 		ft_putstr("Error\nmap too big\n");
-// 	else if (exit_code == 5)
-// 	{
-// 		ft_putstr("Error\n");
-// 		ft_putstr("invalid map, invalid characters\n");
-// 	}
-// 	else if (exit_code == 6)
-// 		ft_putstr("Error\ninvalid map. wrong p count, e count or c count\n");
-// 	exit(1);
-// }
-
-// void	free_map(t_map *map)
-// {
-// 	int		i;
-// 	char	**data;
-
-// 	data = map->data;
-// 	i = 0;
-// 	while (data[i])
-// 	{
-// 		free(data[i]);
-// 		i++;
-// 	}
-// 	free(data);
-// }
-
-// void	error_exit_map(int exit_code, t_map *map)
-// {
-// 	if (exit_code == 2)
-// 	{
-// 		ft_putstr("Error\nmap is not rectangular\n");
-// 		free_map(map);
-// 		exit(1);
-// 	}
-// 	else if (exit_code == 3)
-// 	{
-// 		ft_putstr("Error\nmap not surrounded by walls\n");
-// 		free_map(map);
-// 		exit(1);
-// 	}
-// 	else if (exit_code == 4)
-// 	{
-// 		ft_putstr("Error\nno valid path\n");
-// 		free_map(map);
-// 		exit(1);
-// 	}
-// }
-
-// void	check_asset_error(t_data *image)
-// {
-// 	if (!image->a->floor || !image->a->wall || !image->a->coll || !image->a->pl
-// 		|| !image->a->pl_ex || !image->a->exit)
-// 	{
-// 		ft_putstr("Error\nAssets not loaded\n");
-// 		free_map(image->map);
-// 		// destroy_assets(image);
-// 		// mlx_destroy_display(image->mxptr);
-// 		free(image->mxptr);
-// 		exit(1);
-// 	}
-// }

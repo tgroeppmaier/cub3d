@@ -1,7 +1,7 @@
 #include "cub3D.h"
 
-/* first check, if the map part contains any other than the allowded character.
-	only checks lines, that start with 1 */
+/* first check, if the map part contains any other than the allowed character.
+	*/
 
 void check_invalid_char(char *line, t_data *data)
 {
@@ -19,6 +19,8 @@ void check_invalid_char(char *line, t_data *data)
 	data->map->nbr_lines++;
 	if (i > data->map->max_line_length)
 		data->map->max_line_length = i;
+	if(data->map->p_count > 1)
+		print_error_exit(data, "Error\nToo many players");
 }
 
 bool check_neighbors(char **map, int x, int y, int width, int height)
@@ -44,52 +46,36 @@ bool check_neighbors(char **map, int x, int y, int width, int height)
 	return true;
 }
 
-
-void validate_map(t_data *data)
+void set_player_pos(t_data *data, int i, int j, char c)
 {
-	int i, j;
-
-	for (i = 0; i < data->map->nbr_lines + 2; i++)
-	{
-		for (j = 0; j < data->map->max_line_length + 2; j++)
-		{
-			if (data->map->map_arr[i][j] == 'x')
-			{
-				if (!check_neighbors(data->map->map_arr, i, j, data->map->max_line_length + 2, data->map->nbr_lines + 2))
-				{
-					print_error_exit(data, "Error\nMap not surrounded by walls\n");
-				}
-			}
-		}
-	}
-
+	data->map->player_direction = c;
+	data->map->player_x = j;
+	data->map->player_y = i;
 }
 
 
-// #include "cub3D.h"
-
-// void validate_map(t_data *data)
-// {
-// 	int i;
-// 	int j;
-// 	char c; 
+void validate_map(t_data *data)
+{
+	int i;
+	int j;
+	char c; 
 	
-// 	i = 0;
-// 	j = 0;
-// 	while (i < data->map->nbr_lines + 2)
-// 	{
-// 		while (j < data->map->max_line_length + 2)
-// 		{
-// 			c = data->map->map_arr[i][j];
-// 			if (c == 'x')
-// 			{
-// 				if (!check_neighbors(data->map->map_arr, i, j, data->map->max_line_length + 2, data->map->nbr_lines + 2))
-// 					print_error_exit(data, "Error\nMap not surrounded by walls\n");
-// 			}
-// 			// else if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
-// 			// 	data->map->p_count++;
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// }
+	i = 0;
+	while (i < data->map->nbr_lines + 2)
+	{
+		j = 0;
+		while (j < data->map->max_line_length + 2)
+		{
+			c = data->map->map_arr[i][j];
+			if (c == 'x')
+			{
+				if (!check_neighbors(data->map->map_arr, i, j, data->map->max_line_length + 2, data->map->nbr_lines + 2))
+					print_error_exit(data, "Error\nMap not surrounded by walls\n");
+			}
+			else if (c == 'N' || c == 'E' || c == 'S' || c == 'W')
+				set_player_pos(data, i, j, c);
+			j++;
+		}
+		i++;
+	}
+}
