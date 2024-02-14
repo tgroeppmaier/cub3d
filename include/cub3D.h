@@ -56,6 +56,7 @@ typedef enum {
 	ID_F,
 	ID_C,
 	ID_MAP,
+	ID_EMPTY,
 	ID_UNKNOWN
 } Identifier;
 
@@ -75,8 +76,8 @@ typedef struct s_map
 	int			player_y;
 	char		player_direction;
 	int			p_count;
-	int			max_line_length;
-	int			nbr_lines;
+	int			width;
+	int			height;
 	t_color 	ceiling;
 	t_color 	floor;
 	bool		map_parsing;	// indicates, if map parsing has started
@@ -135,7 +136,8 @@ void		parse_file(t_data *data);
 
 /* 			parse_file_2.c 		*/
 Identifier	get_identifier(char *str);
-char		*get_config_path(t_data *data, char *line);
+void	set_path(char *line, t_data *data, Identifier id);
+// char		*get_config_path(t_data *data, char *line);
 
 /* 			read_file.c			*/
 void		check_argument(int argc, char **argv);

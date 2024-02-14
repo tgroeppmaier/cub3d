@@ -17,9 +17,9 @@ void	check_invalid_char(char *line, t_data *data)
 			error_exit(data, ERR_INVALID_MAP);
 		i++;
 	}
-	data->map->nbr_lines++;
-	if (i > data->map->max_line_length)
-		data->map->max_line_length = i;
+	data->map->height++;
+	if (i > data->map->width)
+		data->map->width = i;
 	if (data->map->p_count > 1)
 		print_error_exit(data, "Error\nToo many players");
 }
@@ -68,16 +68,16 @@ void	validate_map(t_data *data)
 	char	c;
 
 	i = 0;
-	while (i < data->map->nbr_lines + 2)
+	while (i < data->map->height + 2)
 	{
 		j = 0;
-		while (j < data->map->max_line_length + 2)
+		while (j < data->map->width + 2)
 		{
 			c = data->map->map_arr[i][j];
 			if (c == 'x')
 			{
 				if (!check_neighbors(data->map->map_arr, i, j,
-						data->map->max_line_length + 2, data->map->nbr_lines
+						data->map->width + 2, data->map->height
 						+ 2))
 					print_error_exit(data,
 						"Error\nMap not surrounded by walls\n");

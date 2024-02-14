@@ -1,6 +1,6 @@
 #include "cub3D.h"
 
-char	*create_boundary_line(int line_length)
+static char	*create_boundary_line(int line_length)
 {
 	char	*line;
 
@@ -12,7 +12,7 @@ char	*create_boundary_line(int line_length)
 	return (line);
 }
 
-char	*create_map_line(t_data *data, int index, int line_length)
+static char	*create_map_line(t_data *data, int index, int line_length)
 {
 	int		remaining_len;
 	int		j;
@@ -36,6 +36,14 @@ char	*create_map_line(t_data *data, int index, int line_length)
 	return (line);
 }
 
+static void free_map_and_exit(t_data *data, char **map, int i)
+{
+	while (--i >= 0)
+		free(map[i]);
+	free(map);
+	print_error_exit(data, "Error\nMalloc fail\n");
+}
+
 void	create_map(t_data *data)
 {
 	int		i;
@@ -44,8 +52,8 @@ void	create_map(t_data *data)
 	char	**map;
 
 	i = -1;
-	map_width = data->map->max_line_length + 2;
-	map_height = data->map->nbr_lines + 2;
+	map_width = data->map->width + 2;
+	map_height = data->map->height + 2;
 	map = (char **)malloc((map_height + 1) * sizeof(char *));
 	if (!map)
 		print_error_exit(data, "Error\nMalloc fail\n");
@@ -54,12 +62,7 @@ void	create_map(t_data *data)
 	{
 		map[i + 1] = create_map_line(data, i, map_width);
 		if (!map[i + 1])
-		{
-			while (--i >= 0)
-				free(map[i]);
-			free(map);
-			print_error_exit(data, "Error\nMalloc fail\n");
-		}
+			free_map_and_exit(data, map, i);
 	}
 	map[map_height - 1] = create_boundary_line(map_width);
 	map[map_height] = NULL;

@@ -21,8 +21,8 @@ void print_map(t_map *map)
 	print_color(map->floor);
 	printf("Ceiling color: ");
 	print_color(map->ceiling);
-	printf("max line length = %d\n", map->max_line_length);
-	printf("number of lines: %d\n", map->nbr_lines);
+	printf("max line length = %d\n", map->width);
+	printf("number of lines: %d\n", map->height);
 	printf("player count: %d\n", map->p_count);
 	printf("player x: %d\n", map->player_x);
 	printf("player y: %d\n", map->player_y);

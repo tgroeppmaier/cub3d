@@ -1,27 +1,5 @@
 #include "cub3D.h"
 
-void	set_path(char *line, t_data *data, Identifier id)
-{
-	char	**path;
-
-	path = NULL;
-	if (id == ID_NO || id == ID_SO || id == ID_WE || id == ID_EA)
-	{
-		if (id == ID_NO)
-			path = &(data->assets->NO_path);
-		else if (id == ID_SO)
-			path = &(data->assets->SO_path);
-		else if (id == ID_WE)
-			path = &(data->assets->WE_path);
-		else if (id == ID_EA)
-			path = &(data->assets->EA_path);
-		if (*path == NULL)
-			*path = get_config_path(data, line + 3);
-		else
-			error_exit(data, ERR_IDENT);
-	}
-}
-
 /* converts char string to unsigned char, moves pointer and checks,
 	if the pointer has moved.
 	returns value */
@@ -76,29 +54,30 @@ void	set_color_value(char *line, t_data *data, Identifier id)
 /* when this function is called, *line points to the first character
 of the line. After the identifier are 1+n whitespaces */
 
-void	parse_line(char *line, t_data *data, Identifier id)
+char *skip_whitespace(char *line)
 {
+	while (*line && ft_isspace(*line))
+		line++;
+	return line;
+}
+
+void parse_line(char *line, t_data *data, Identifier id)
+{
+	if (data->map->map_parsing == true && (id == ID_NO || id == ID_SO || id == ID_WE || id == ID_EA || id == ID_F || id == ID_C))
+		print_error_exit(data, "Error\n wrong order\n");
+	line = skip_whitespace(line);
 	if (id == ID_NO || id == ID_SO || id == ID_WE || id == ID_EA)
-	{
-		if (data->map->map_parsing == true)
-			print_error_exit(data, "Error\n wrong order\n");
-		while (*line && ft_isspace(*line))
-			line++;
 		set_path(line, data, id);
-	}
 	else if (id == ID_F || id == ID_C)
 	{
-		if (data->map->map_parsing == true)
-			print_error_exit(data, "Error\n wrong order\n");
-		while (*line && ft_isspace(*line)) // skip over whitespace before id
-			line++;
-		line++;                            // skip over id
-		while (*line && ft_isspace(*line)) // skip over whitespace after id
-			line++;
+		line++; // skip over id
+		line = skip_whitespace(line);
 		set_color_value(line, data, id);
 	}
 	else if (id == ID_MAP)
 		check_invalid_char(line, data);
+	else if (id == ID_EMPTY)
+		return;
 	else
 		error_exit(data, ERR_IDENT);
 }
@@ -127,8 +106,8 @@ void	parse_file(t_data *data)
 		if (id == ID_MAP && data->map->map_parsing == false)
 		{
 			data->map->map_parsing = true;
-			data->map->map_start = data->file_by_line + i;
 			check_config(data);
+			data->map->map_start = data->file_by_line + i;
 		}
 		parse_line(line, data, id);
 	}

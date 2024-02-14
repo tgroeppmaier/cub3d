@@ -1,18 +1,11 @@
 #include "cub3D.h"
 
-void	check_config(t_data *data)
-{
-	if (!data->assets->NO_path || !data->assets->SO_path
-		|| !data->assets->WE_path || !data->assets->EA_path)
-		print_error_exit(data, "Error\nasset path error");
-	if (!data->map->ceiling.color_ok || !data->map->floor.color_ok)
-		print_error_exit(data, "Error\ncolor error");
-}
-
-Identifier	get_identifier(char *str)
+Identifier get_identifier(char *str)
 {
 	while (*str && ft_isspace(*str))
 		str++;
+	if (*str == '\0')
+		return ID_EMPTY; // return ID_EMPTY if the line only contains whitespaces
 	if (ft_strncmp(str, "NO ", 3) == 0)
 		return (ID_NO);
 	if (ft_strncmp(str, "SO ", 3) == 0)
@@ -30,7 +23,16 @@ Identifier	get_identifier(char *str)
 	return (ID_UNKNOWN);
 }
 
-char	*get_config_path(t_data *data, char *line)
+void	check_config(t_data *data)
+{
+	if (!data->assets->NO_path || !data->assets->SO_path
+		|| !data->assets->WE_path || !data->assets->EA_path)
+		print_error_exit(data, "Error\nasset path error");
+	if (!data->map->ceiling.color_ok || !data->map->floor.color_ok)
+		print_error_exit(data, "Error\ncolor error");
+}
+
+static char	*get_config_path(t_data *data, char *line)
 {
 	int	i;
 	int	len;
@@ -47,3 +49,27 @@ char	*get_config_path(t_data *data, char *line)
 		error_exit(data, ERR_IDENT);
 	return (ft_strndup(line + start, i - start));
 }
+
+void	set_path(char *line, t_data *data, Identifier id)
+{
+	char	**path;
+
+	path = NULL;
+	if (id == ID_NO || id == ID_SO || id == ID_WE || id == ID_EA)
+	{
+		if (id == ID_NO)
+			path = &(data->assets->NO_path);
+		else if (id == ID_SO)
+			path = &(data->assets->SO_path);
+		else if (id == ID_WE)
+			path = &(data->assets->WE_path);
+		else if (id == ID_EA)
+			path = &(data->assets->EA_path);
+		if (*path == NULL)
+			*path = get_config_path(data, line + 3);
+		else
+			error_exit(data, ERR_IDENT);
+	}
+}
+
+
