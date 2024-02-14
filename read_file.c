@@ -1,6 +1,6 @@
 #include "cub3D.h"
 
-bool ft_isspace(int c) 
+bool	ft_isspace(int c)
 {
 	return (c == ' ' || c == '\t' || c == '\v' || c == '\f' || c == '\r');
 }
@@ -27,18 +27,19 @@ void	check_argument(int argc, char **argv)
 	}
 }
 
-int prepare_file(char *path, t_data *data, char **buffer)
+int	prepare_file(char *path, t_data *data, char **buffer)
 {
-	int fd;
+	int	fd;
 
 	*buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if(!*buffer)
+	if (!*buffer)
 		print_error_exit(data, "Error\nFailed to allocate memory for buffer");
 	data->file = ft_strdup("");
-	if(!data->file)
+	if (!data->file)
 	{
 		free(*buffer);
-		print_error_exit(data, "Error\nFailed to duplicate string for file data");
+		print_error_exit(data,
+			"Error\nFailed to duplicate string for file data");
 	}
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
@@ -46,23 +47,24 @@ int prepare_file(char *path, t_data *data, char **buffer)
 		free(*buffer);
 		print_error_exit(data, "Error\nFailed to open file");
 	}
-	return fd;
+	return (fd);
 }
 
-void read_and_concatenate(int fd, t_data *data, char *buffer)
+void	read_and_concatenate(int fd, t_data *data, char *buffer)
 {
-	int bytes_read;
-	char *tmp;
+	int		bytes_read;
+	char	*tmp;
 
 	tmp = NULL;
-	while((bytes_read = read(fd, buffer, BUFFER_SIZE)) > 0)
+	while ((bytes_read = read(fd, buffer, BUFFER_SIZE)) > 0)
 	{
 		buffer[bytes_read] = '\0';
 		tmp = ft_strjoin(data->file, buffer);
 		free(data->file);
 		data->file = ft_strdup(tmp);
-		if(!data->file)
-			print_error_exit(data, "Error\nFailed to duplicate string for file data");
+		if (!data->file)
+			print_error_exit(data,
+				"Error\nFailed to duplicate string for file data");
 		free(tmp);
 	}
 	if (bytes_read == -1)
@@ -75,11 +77,11 @@ void read_and_concatenate(int fd, t_data *data, char *buffer)
 	free(buffer);
 }
 
-void read_file(char *path, t_data *data)
+void	read_file(char *path, t_data *data)
 {
-	char *buffer;
-	int fd;
-	
+	char	*buffer;
+	int		fd;
+
 	fd = prepare_file(path, data, &buffer);
 	read_and_concatenate(fd, data, buffer);
 }

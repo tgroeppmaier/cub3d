@@ -2,7 +2,7 @@
 
 /*	Initializes the data, assets, and map structures */
 
-void initialization(t_data* data, t_asset* assets, t_map* map)
+void	initialization(t_data *data, t_asset *assets, t_map *map)
 {
 	ft_memset(data, 0, sizeof(*data));
 	ft_memset(assets, 0, sizeof(*assets));
@@ -13,11 +13,11 @@ void initialization(t_data* data, t_asset* assets, t_map* map)
 	// data->map->nbr_lines = 2;
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	t_data	data;
-	t_asset	assets;
-	t_map	map;
+	t_data data;
+	t_asset assets;
+	t_map map;
 
 	initialization(&data, &assets, &map);
 	check_argument(argc, argv);
@@ -29,5 +29,5 @@ int main(int argc, char **argv)
 	print_data(&data);
 	free_file(&data);
 	free_assets(&data);
-	return 0;
+	return (0);
 }
