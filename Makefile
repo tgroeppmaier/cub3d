@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra -Werror -g -Iinclude -pthread
 LDFLAGS = -Llib -lmlx42 -ldl -lglfw -lm -lft
 ASANFLAGS = -fsanitize=address
 NAME = cub3D 
-SRC = main.c parse_file.c parse_map.c errors.c debug.c checks.c read_file.c map_check.c
+SRC = main.c parse_file.c parse_map.c errors.c debug.c parse_file_2.c read_file.c map_check.c
 OBJ = $(SRC:.c=.o)
 HEADER = include/MLX42.h
 LIBDIR = MLX42

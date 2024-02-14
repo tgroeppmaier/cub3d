@@ -47,7 +47,7 @@ void create_map(t_data *data)
 	map_height = data->map->nbr_lines + 2;
 	char **map = (char **)malloc((map_height + 1) * sizeof(char *));
 	if (!map)
-		return; // todo
+		print_error_exit(data, "Error\nMalloc fail\n");
 	map[0] = create_boundary_line(map_width);
 	while(++i < map_height - 2)
 	{
@@ -57,7 +57,7 @@ void create_map(t_data *data)
 			while (--i >= 0)
 				free(map[i]);
 			free(map);
-			return; // todo
+			print_error_exit(data, "Error\nMalloc fail\n");
 		}
 	}
 	map[map_height - 1] = create_boundary_line(map_width);

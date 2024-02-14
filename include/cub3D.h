@@ -130,9 +130,12 @@ void 		free_file(t_data *data);
 void		print_error_exit(t_data *data, char *message);
 void		free_array(char **array);
 
-/* 			parse_file.c */
+/* 			parse_file.c 		*/
 void		parse_file(t_data *data);
-Identifier 	get_identifier(char *str);
+
+/* 			parse_file_2.c 		*/
+Identifier	get_identifier(char *str);
+char		*get_config_path(t_data *data, char *line);
 
 /* 			read_file.c			*/
 void		check_argument(int argc, char **argv);

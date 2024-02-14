@@ -53,6 +53,11 @@ void set_player_pos(t_data *data, int i, int j, char c)
 	data->map->player_y = i;
 }
 
+void check_player(t_data *data)
+{
+	if(data->map->p_count != 1)
+		print_error_exit(data, "Error\nWrong Player Count\n");
+}
 
 void validate_map(t_data *data)
 {
@@ -78,4 +83,5 @@ void validate_map(t_data *data)
 		}
 		i++;
 	}
+	check_player(data);
 }
