@@ -27,7 +27,7 @@ void	check_argument(int argc, char **argv)
 	}
 }
 
-int	prepare_file(char *path, t_data *data, char **buffer)
+static int	prepare_file(char *path, t_data *data, char **buffer)
 {
 	int	fd;
 
@@ -50,7 +50,7 @@ int	prepare_file(char *path, t_data *data, char **buffer)
 	return (fd);
 }
 
-void	read_and_concatenate(int fd, t_data *data, char *buffer)
+static void	read_and_concatenate(int fd, t_data *data, char *buffer)
 {
 	int		bytes_read;
 	char	*tmp;

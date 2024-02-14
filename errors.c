@@ -1,8 +1,4 @@
 #include "cub3D.h"
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 
 void	free_assets(t_data *data)
 {

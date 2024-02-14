@@ -4,7 +4,7 @@
 	if the pointer has moved.
 	returns value */
 
-unsigned char	get_color_value(t_data *data, char **str)
+static unsigned char	get_color_value(t_data *data, char **str)
 {
 	int		result;
 	char	*test;
@@ -25,7 +25,7 @@ unsigned char	get_color_value(t_data *data, char **str)
 
 /* checks, if the color is already set. if not, it sets the color values */
 
-void	set_color_value(char *line, t_data *data, Identifier id)
+static void	set_color_value(char *line, t_data *data, Identifier id)
 {
 	t_color	*color;
 
@@ -54,14 +54,14 @@ void	set_color_value(char *line, t_data *data, Identifier id)
 /* when this function is called, *line points to the first character
 of the line. After the identifier are 1+n whitespaces */
 
-char *skip_whitespace(char *line)
+static char *skip_whitespace(char *line)
 {
 	while (*line && ft_isspace(*line))
 		line++;
 	return line;
 }
 
-void parse_line(char *line, t_data *data, Identifier id)
+static void parse_line(char *line, t_data *data, Identifier id)
 {
 	if (data->map->map_parsing == true && (id == ID_NO || id == ID_SO || id == ID_WE || id == ID_EA || id == ID_F || id == ID_C))
 		print_error_exit(data, "Error\n wrong order\n");

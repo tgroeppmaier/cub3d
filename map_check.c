@@ -24,7 +24,7 @@ void	check_invalid_char(char *line, t_data *data)
 		print_error_exit(data, "Error\nToo many players");
 }
 
-bool	check_neighbors(char **map, int x, int y, int width, int height)
+static bool	check_neighbors(char **map, int x, int y, int width, int height)
 {
 	int	i;
 	int	nx;
@@ -48,14 +48,14 @@ bool	check_neighbors(char **map, int x, int y, int width, int height)
 	return (true);
 }
 
-void	set_player_pos(t_data *data, int i, int j, char c)
+static void	set_player_pos(t_data *data, int i, int j, char c)
 {
 	data->map->player_direction = c;
 	data->map->player_x = j;
 	data->map->player_y = i;
 }
 
-void	check_player(t_data *data)
+static void	check_player(t_data *data)
 {
 	if (data->map->p_count != 1)
 		print_error_exit(data, "Error\nWrong Player Count\n");
