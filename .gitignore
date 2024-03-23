@@ -3,3 +3,8 @@ cub3D
 /lib/*
 *.out
 vgcore.*
+mlx/libmlx_Linux.a
+mlx/libmlx.a
+mlx/Makefile.gen
+mlx/test/Makefile.gen
+mlx/test/mlx-test
