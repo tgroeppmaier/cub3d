@@ -11,6 +11,7 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <string.h>
+# include "mlx.h"
 
 # define BLOCK_SIZE 64
 # define BUFFER_SIZE 100

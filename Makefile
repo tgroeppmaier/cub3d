@@ -1,12 +1,12 @@
 CC=clang
-CFLAGS = -Wall -Wextra -Werror -g -Iinclude -pthread
-LDFLAGS = -Llib -lmlx42 -ldl -lglfw -lm -lft
+CFLAGS = -Wall -Wextra -Werror -g -Iinclude #-pthread
+LDFLAGS = -Llib -lmlx -lft
 ASANFLAGS = -fsanitize=address
 NAME = cub3D 
 SRC = main.c parse_file.c parse_map.c errors.c debug.c parse_file_2.c read_file.c map_check.c
 OBJ = $(SRC:.c=.o)
-HEADER = include/MLX42.h
-LIBDIR = MLX42
+HEADER = include/mlx.h
+LIBDIR = mlx
 LIBFT = src/libft
 
 .PHONY: all clean fclean re lib asan libft
@@ -22,7 +22,8 @@ libft:
 	cp $(LIBFT)/libft.a lib/
 
 lib:
-	cd $(LIBDIR) && cmake -B ../lib && cmake --build ../lib -j4
+	cd $(LIBDIR) && make
+	cp $(LIBDIR)/libmlx.a lib/
 
 $(NAME): $(OBJ)
 	$(CC) $(OBJ) -o $@ $(LDFLAGS)
