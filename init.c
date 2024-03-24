@@ -1,6 +1,5 @@
 #include "cub3D.h"
 
-
 void	init_texture_img(t_data *data, t_img *image, char *path)
 {
 	// init_img_clean(image);
@@ -53,20 +52,20 @@ void	init_textures(t_data *data)
     data->texinfo.size = TEX_SIZE;
     data->textures = ft_calloc(5, sizeof * data->textures);
 	if (!data->textures)
-		print_error_exit(data, "malloc error/n");
+		print_error_exit(data, "mlx error/n");
 	data->textures[NORTH] = xpm_to_img(data, data->texinfo.NO_path);
 	data->textures[EAST] = xpm_to_img(data, data->texinfo.EA_path);
 	data->textures[SOUTH] = xpm_to_img(data, data->texinfo.SO_path);
 	data->textures[WEST] = xpm_to_img(data, data->texinfo.WE_path);
 }
 
-// void	init_texinfo(t_texinfo *textures)
-// {
-// 	textures->hex_floor = 0x0;
-// 	textures->hex_ceiling = 0x0;
-// 	textures->size = TEX_SIZE;
-// 	// textures->step = 0.0;
-// 	// textures->pos = 0.0;
-// 	// textures->x = 0;
-// 	// textures->y = 0;
-// }
+void	init_mlx(t_data *data)
+{
+	data->mlx = mlx_init();
+	if (!data->mlx)
+		print_error_exit(data, "mlx error/n");
+	data->win = mlx_new_window(data->mlx, WIN_WIDTH, WIN_HEIGHT, "Cub3D");
+	if (!data->win)
+		print_error_exit(data, "mlx error/n");
+	return ;
+}

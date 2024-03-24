@@ -45,6 +45,23 @@ void print_map(t_map *map)
 	free_array(map->map_arr);
 }
 
+void print_floor_and_ceiling_colors(t_texinfo *texinfo)
+{
+	unsigned char red_floor, green_floor, blue_floor;
+	unsigned char red_ceiling, green_ceiling, blue_ceiling;
+
+	red_floor = (texinfo->hex_floor >> 16) & 0xFF;
+	green_floor = (texinfo->hex_floor >> 8) & 0xFF;
+	blue_floor = texinfo->hex_floor & 0xFF;
+
+	red_ceiling = (texinfo->hex_ceiling >> 16) & 0xFF;
+	green_ceiling = (texinfo->hex_ceiling >> 8) & 0xFF;
+	blue_ceiling = texinfo->hex_ceiling & 0xFF;
+
+	printf("Floor color: R=%u, G=%u, B=%u\n", red_floor, green_floor, blue_floor);
+	printf("Ceiling color: R=%u, G=%u, B=%u\n", red_ceiling, green_ceiling, blue_ceiling);
+}
+
 void print_asset(t_texinfo *asset) 
 {
 	printf("NO path: %s\n", asset->NO_path);
@@ -58,6 +75,7 @@ void print_data(t_data *data)
 	// printf("File: %s\n", data->file);
 	print_asset(&(data->texinfo));
 	print_map(&(data->map));
+	print_floor_and_ceiling_colors(&(data->texinfo));
 	// char **temp = data->file_by_line;
 	// while(*temp)
 	// {

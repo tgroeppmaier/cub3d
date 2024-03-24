@@ -4,7 +4,7 @@ LIBS = -Llib -lmlx -lft -lX11 -lXext
 ASANFLAGS = -fsanitize=address
 NAME = cub3D 
 SRC = main.c parse_file.c parse_map.c errors.c debug.c parse_file_2.c read_file.c map_check.c \
-init_textures.c
+init.c
 OBJ = $(SRC:.c=.o)
 HEADER = include/mlx.h
 LIBDIR = mlx

@@ -22,7 +22,8 @@ int	main(int argc, char **argv)
 	check_config(&data);
 	create_map(&data);
 	validate_map(&data);
-
+	
+	init_mlx(&data);
 	init_textures(&data);
 	print_data(&data);
 	free_file(&data);

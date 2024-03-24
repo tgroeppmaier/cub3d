@@ -17,6 +17,9 @@
 # define BUFFER_SIZE 100
 # define MIN_FILE_SIZE 17
 
+# define WIN_WIDTH 640
+# define WIN_HEIGHT 480
+
 typedef enum {
 	ERR_USAGE,
 	ERR_FILE_NOT_CUB,
@@ -72,14 +75,6 @@ enum e_texture_index
 
 ///////////////// not yet used////////////////////////
 
-typedef struct s_img
-{
-	void	*img;
-	int		*addr;
-	int		pixel_bits;
-	int		size_line;
-	int		endian;
-}	t_img;
 
 typedef struct s_player
 {
@@ -118,6 +113,15 @@ typedef struct s_ray
 }	t_ray;
 
 //////////////////////////////////////////////////////
+
+typedef struct s_img
+{
+	void	*img;
+	int		*addr;
+	int		pixel_bits;
+	int		size_line;
+	int		endian;
+}	t_img;
 
 typedef struct s_color
 {
@@ -171,16 +175,6 @@ typedef struct s_data
 	t_map		map;
 }				t_data;
 
-/*			ft_split.c		*/
-// size_t		ft_strlen(const char *s);
-// char		**ft_split(char const *s, char c);
-
-// /*          utils.c          */
-// void		ft_putstr(char *str);
-// int			ft_strncmp(const char *s1, const char *s2, size_t n);
-// void		ft_putnbr(int n);
-// void		*ft_memset(void *s, int c, size_t n);
-
 /*          errors.c         */
 // void		error_exit_read(int exit_code);
 // void		free_map(t_map *map);
@@ -220,6 +214,7 @@ void		validate_map(t_data *data);
 
 /* 			init_textures.c */
 void		init_textures(t_data *data);
+void		init_mlx(t_data *data);
 
 
 #endif
