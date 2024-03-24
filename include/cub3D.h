@@ -13,7 +13,7 @@
 # include <string.h>
 # include "mlx.h"
 
-# define BLOCK_SIZE 64
+# define TEX_SIZE 64
 # define BUFFER_SIZE 100
 # define MIN_FILE_SIZE 17
 
@@ -61,6 +61,64 @@ typedef enum {
 	ID_UNKNOWN
 } Identifier;
 
+enum e_texture_index
+{
+	NORTH = 0,
+	SOUTH = 1,
+	EAST = 2,
+	WEST = 3
+};
+
+
+///////////////// not yet used////////////////////////
+
+typedef struct s_img
+{
+	void	*img;
+	int		*addr;
+	int		pixel_bits;
+	int		size_line;
+	int		endian;
+}	t_img;
+
+typedef struct s_player
+{
+	char	dir;
+	double	pos_x;
+	double	pos_y;
+	double	dir_x;
+	double	dir_y;
+	double	plane_x;
+	double	plane_y;
+	int		has_moved;
+	int		move_x;
+	int		move_y;
+	int		rotate;
+}	t_player;
+
+typedef struct s_ray
+{
+	double	camera_x;
+	double	dir_x;
+	double	dir_y;
+	int		map_x;
+	int		map_y;
+	int		step_x;
+	int		step_y;
+	double	sidedist_x;
+	double	sidedist_y;
+	double	deltadist_x;
+	double	deltadist_y;
+	double	wall_dist;
+	double	wall_x;
+	int		side;
+	int		line_height;
+	int		draw_start;
+	int		draw_end;
+}	t_ray;
+
+//////////////////////////////////////////////////////
+
 typedef struct s_color
 {
 	unsigned char 	red;
@@ -69,10 +127,20 @@ typedef struct s_color
 	bool			color_ok;
 }			t_color;
 
+
+typedef struct s_texinfo
+{
+	char	*NO_path;
+	char	*SO_path;
+	char	*WE_path;
+	char	*EA_path;
+	int		size;
+	int		hex_floor;
+	int		hex_ceiling;
+}			t_texinfo;
+
 typedef struct s_map
 {
-	// int		width;
-	// int		height;
 	int			player_x;
 	int			player_y;
 	char		player_direction;
@@ -84,32 +152,24 @@ typedef struct s_map
 	bool		map_parsing;	// indicates, if map parsing has started
 	char		**map_start; // pointer to the map part of file_by_line
 	char		**map_arr;
-	// char		**data;
 }				t_map;
-
-typedef struct s_asset
-{
-	char	*NO_path;
-	char	*SO_path;
-	char	*WE_path;
-	char	*EA_path;
-}			t_asset;
 
 typedef struct s_data
 {
-	// void	*mxptr;
-	// void	*mxwin;
-	// void	*imgptr;
-	// char	*addr;
-	// int		bits_per_pixel;
-	// int		line_length;
-	// int		endian;
-	// bool	exit_loop;
-	char	*file;
-	char	**file_by_line;
-	t_asset	*assets;
-	t_map	*map;
-}			t_data;
+	void		*mlx;
+	void		*win;
+	int			win_height;
+	int			win_width;
+	int			**texture_pixels;
+	int			**textures;
+
+
+	char		*file;
+	char		**file_by_line;
+	t_player	player;
+	t_texinfo	*assets;
+	t_map		map;
+}				t_data;
 
 /*			ft_split.c		*/
 // size_t		ft_strlen(const char *s);

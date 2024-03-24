@@ -45,7 +45,7 @@ void	print_error_exit(t_data *data, char *message)
 	printf("%s\n", message);
 	free_file(data);
 	free_assets(data);
-	free_array(data->map->map_arr);
+	free_array(data->map.map_arr);
 	exit(1);
 }
 

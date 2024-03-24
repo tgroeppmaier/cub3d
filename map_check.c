@@ -12,15 +12,15 @@ void	check_invalid_char(char *line, t_data *data)
 	{
 		if (line[i] == 'N' || line[i] == 'S' || line[i] == 'E'
 			|| line[i] == 'W')
-			data->map->p_count++;
+			data->map.p_count++;
 		else if (line[i] != ' ' && line[i] != '0' && line[i] != '1')
 			error_exit(data, ERR_INVALID_MAP);
 		i++;
 	}
-	data->map->height++;
-	if (i > data->map->width)
-		data->map->width = i;
-	if (data->map->p_count > 1)
+	data->map.height++;
+	if (i > data->map.width)
+		data->map.width = i;
+	if (data->map.p_count > 1)
 		print_error_exit(data, "Error\nToo many players");
 }
 
@@ -50,14 +50,14 @@ static bool	check_neighbors(char **map, int x, int y, int width, int height)
 
 static void	set_player_pos(t_data *data, int i, int j, char c)
 {
-	data->map->player_direction = c;
-	data->map->player_x = j;
-	data->map->player_y = i;
+	data->map.player_direction = c;
+	data->map.player_x = j;
+	data->map.player_y = i;
 }
 
 static void	check_player(t_data *data)
 {
-	if (data->map->p_count != 1)
+	if (data->map.p_count != 1)
 		print_error_exit(data, "Error\nWrong Player Count\n");
 }
 
@@ -68,16 +68,16 @@ void	validate_map(t_data *data)
 	char	c;
 
 	i = 0;
-	while (i < data->map->height + 2)
+	while (i < data->map.height + 2)
 	{
 		j = 0;
-		while (j < data->map->width + 2)
+		while (j < data->map.width + 2)
 		{
-			c = data->map->map_arr[i][j];
+			c = data->map.map_arr[i][j];
 			if (c == 'x')
 			{
-				if (!check_neighbors(data->map->map_arr, i, j,
-						data->map->width + 2, data->map->height
+				if (!check_neighbors(data->map.map_arr, i, j,
+						data->map.width + 2, data->map.height
 						+ 2))
 					print_error_exit(data,
 						"Error\nMap not surrounded by walls\n");

@@ -22,7 +22,7 @@ static char	*create_map_line(t_data *data, int index, int line_length)
 	if (!line)
 		return (NULL); // todo
 	line[0] = 'x';
-	ft_strlcpy(line + 1, data->map->map_start[index], line_length - 1);
+	ft_strlcpy(line + 1, data->map.map_start[index], line_length - 1);
 	remaining_len = line_length - ft_strlen(line);
 	ft_memset(line + ft_strlen(line), 'x', remaining_len);
 	line[line_length - 1] = 'x';
@@ -52,8 +52,8 @@ void	create_map(t_data *data)
 	char	**map;
 
 	i = -1;
-	map_width = data->map->width + 2;
-	map_height = data->map->height + 2;
+	map_width = data->map.width + 2;
+	map_height = data->map.height + 2;
 	map = (char **)malloc((map_height + 1) * sizeof(char *));
 	if (!map)
 		print_error_exit(data, "Error\nMalloc fail\n");
@@ -66,5 +66,5 @@ void	create_map(t_data *data)
 	}
 	map[map_height - 1] = create_boundary_line(map_width);
 	map[map_height] = NULL;
-	data->map->map_arr = map;
+	data->map.map_arr = map;
 }

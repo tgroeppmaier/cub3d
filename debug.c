@@ -45,7 +45,7 @@ void print_map(t_map *map)
 	free_array(map->map_arr);
 }
 
-void print_asset(t_asset *asset) 
+void print_asset(t_texinfo *asset) 
 {
 	printf("NO path: %s\n", asset->NO_path);
 	printf("SO path: %s\n", asset->SO_path);
@@ -57,7 +57,7 @@ void print_data(t_data *data)
 {
 	// printf("File: %s\n", data->file);
 	print_asset(data->assets);
-	print_map(data->map);
+	print_map(&(data->map));
 	// char **temp = data->file_by_line;
 	// while(*temp)
 	// {

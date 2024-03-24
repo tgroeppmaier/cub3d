@@ -30,9 +30,9 @@ static void	set_color_value(char *line, t_data *data, Identifier id)
 	t_color	*color;
 
 	if (id == ID_F)
-		color = &(data->map->floor);
+		color = &(data->map.floor);
 	else
-		color = &(data->map->ceiling);
+		color = &(data->map.ceiling);
 	if (color->color_ok == true)
 		print_error_exit(data, "Error\nColor duplicate");
 	color->red = get_color_value(data, &line);
@@ -63,7 +63,7 @@ static char *skip_whitespace(char *line)
 
 static void parse_line(char *line, t_data *data, Identifier id)
 {
-	if (data->map->map_parsing == true && (id == ID_NO || id == ID_SO || id == ID_WE || id == ID_EA || id == ID_F || id == ID_C))
+	if (data->map.map_parsing == true && (id == ID_NO || id == ID_SO || id == ID_WE || id == ID_EA || id == ID_F || id == ID_C))
 		print_error_exit(data, "Error\n wrong order\n");
 	line = skip_whitespace(line);
 	if (id == ID_NO || id == ID_SO || id == ID_WE || id == ID_EA)
@@ -103,11 +103,11 @@ void	parse_file(t_data *data)
 		id = get_identifier(line);
 		if (id == ID_UNKNOWN)
 			error_exit(data, ERR_IDENT);
-		if (id == ID_MAP && data->map->map_parsing == false)
+		if (id == ID_MAP && data->map.map_parsing == false)
 		{
-			data->map->map_parsing = true;
+			data->map.map_parsing = true;
 			check_config(data);
-			data->map->map_start = data->file_by_line + i;
+			data->map.map_start = data->file_by_line + i;
 		}
 		parse_line(line, data, id);
 	}
