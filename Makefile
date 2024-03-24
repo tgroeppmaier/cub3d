@@ -1,9 +1,10 @@
 CC=clang
 CFLAGS = -Wall -Wextra -Werror -g -Iinclude #-pthread
-LDFLAGS = -Llib -lmlx -lft
+LIBS = -Llib -lmlx -lft -lX11 -lXext
 ASANFLAGS = -fsanitize=address
 NAME = cub3D 
-SRC = main.c parse_file.c parse_map.c errors.c debug.c parse_file_2.c read_file.c map_check.c
+SRC = main.c parse_file.c parse_map.c errors.c debug.c parse_file_2.c read_file.c map_check.c \
+init_textures.c
 OBJ = $(SRC:.c=.o)
 HEADER = include/mlx.h
 LIBDIR = mlx
@@ -14,7 +15,7 @@ LIBFT = src/libft
 all: libft lib $(NAME)
 
 asan: CFLAGS += -fsanitize=address
-asan: LDFLAGS += -fsanitize=address
+asan: LIBS += -fsanitize=address
 asan: all
 
 libft:
@@ -26,7 +27,7 @@ lib:
 	cp $(LIBDIR)/libmlx.a lib/
 
 $(NAME): $(OBJ)
-	$(CC) $(OBJ) -o $@ $(LDFLAGS)
+	$(CC) $(OBJ) -o $@ $(LIBS)
 
 %.o: %.c $(HEADER)
 	$(CC) $(CFLAGS) -c $< -o $@

@@ -25,8 +25,8 @@ Identifier get_identifier(char *str)
 
 void	check_config(t_data *data)
 {
-	if (!data->assets->NO_path || !data->assets->SO_path
-		|| !data->assets->WE_path || !data->assets->EA_path)
+	if (!data->texinfo.NO_path || !data->texinfo.SO_path
+		|| !data->texinfo.WE_path || !data->texinfo.EA_path)
 		print_error_exit(data, "Error\nasset path error");
 	if (!data->map.ceiling.color_ok || !data->map.floor.color_ok)
 		print_error_exit(data, "Error\ncolor error");
@@ -58,13 +58,13 @@ void	set_path(char *line, t_data *data, Identifier id)
 	if (id == ID_NO || id == ID_SO || id == ID_WE || id == ID_EA)
 	{
 		if (id == ID_NO)
-			path = &(data->assets->NO_path);
+			path = &(data->texinfo.NO_path);
 		else if (id == ID_SO)
-			path = &(data->assets->SO_path);
+			path = &(data->texinfo.SO_path);
 		else if (id == ID_WE)
-			path = &(data->assets->WE_path);
+			path = &(data->texinfo.WE_path);
 		else if (id == ID_EA)
-			path = &(data->assets->EA_path);
+			path = &(data->texinfo.EA_path);
 		if (*path == NULL)
 			*path = get_config_path(data, line + 3);
 		else

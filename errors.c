@@ -2,10 +2,11 @@
 
 void	free_assets(t_data *data)
 {
-	free(data->assets->NO_path);
-	free(data->assets->SO_path);
-	free(data->assets->WE_path);
-	free(data->assets->EA_path);
+	free(data->texinfo.NO_path);
+	free(data->texinfo.SO_path);
+	free(data->texinfo.WE_path);
+	free(data->texinfo.EA_path);
+	free(data->textures);
 }
 
 void	free_file(t_data *data)

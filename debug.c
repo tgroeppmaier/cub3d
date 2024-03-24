@@ -56,7 +56,7 @@ void print_asset(t_texinfo *asset)
 void print_data(t_data *data)
 {
 	// printf("File: %s\n", data->file);
-	print_asset(data->assets);
+	print_asset(&(data->texinfo));
 	print_map(&(data->map));
 	// char **temp = data->file_by_line;
 	// while(*temp)

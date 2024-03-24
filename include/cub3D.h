@@ -167,7 +167,7 @@ typedef struct s_data
 	char		*file;
 	char		**file_by_line;
 	t_player	player;
-	t_texinfo	*assets;
+	t_texinfo	texinfo;
 	t_map		map;
 }				t_data;
 
@@ -217,6 +217,9 @@ void 		check_config(t_data *data);
 
 /* 			map_check.c */
 void		validate_map(t_data *data);
+
+/* 			init_textures.c */
+void		init_textures(t_data *data);
 
 
 #endif

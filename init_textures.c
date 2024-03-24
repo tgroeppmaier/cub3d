@@ -1,5 +1,18 @@
 #include "cub3D.h"
 
+
+void	init_texture_img(t_data *data, t_img *image, char *path)
+{
+	// init_img_clean(image);
+	image->img = mlx_xpm_file_to_image(data->mlx, path, &data->texinfo.size,
+			&data->texinfo.size);
+	if (image->img == NULL)
+		print_error_exit(data, "mlx error/n");
+	image->addr = (int *)mlx_get_data_addr(image->img, &image->pixel_bits,
+			&image->size_line, &image->endian);
+	return ;
+}
+
 /* The function xpm_to_img is used to convert an XPM (X PixMap) image file into an array of integers, 
 where each integer represents a pixel in the image. 
 The function takes two parameters: a pointer to the main data structure (t_data *data),
@@ -16,7 +29,7 @@ static int	*xpm_to_img(t_data *data, char *path)
 	buffer = ft_calloc(1,
 			sizeof * buffer * data->texinfo.size * data->texinfo.size);
 	if (!buffer)
-		clean_exit(data, err_msg(NULL, ERR_MALLOC, 1));
+		print_error_exit(data, "malloc error/n");
 	y = 0;
 	while (y < data->texinfo.size)
 	{
@@ -35,28 +48,25 @@ static int	*xpm_to_img(t_data *data, char *path)
 
 void	init_textures(t_data *data)
 {
-	data->textures = ft_calloc(5, sizeof * data->textures);
+    data->texinfo.hex_floor = (data->map.floor.red << 16) | (data->map.floor.green << 8) | data->map.floor.blue;
+    data->texinfo.hex_ceiling = (data->map.ceiling.red << 16) | (data->map.ceiling.green << 8) | data->map.ceiling.blue;
+    data->texinfo.size = TEX_SIZE;
+    data->textures = ft_calloc(5, sizeof * data->textures);
 	if (!data->textures)
-		clean_exit(data, err_msg(NULL, ERR_MALLOC, 1));
-	data->textures[NORTH] = xpm_to_img(data, data->texinfo.north);
-	data->textures[SOUTH] = xpm_to_img(data, data->texinfo.south);
-	data->textures[EAST] = xpm_to_img(data, data->texinfo.east);
-	data->textures[WEST] = xpm_to_img(data, data->texinfo.west);
+		print_error_exit(data, "malloc error/n");
+	data->textures[NORTH] = xpm_to_img(data, data->texinfo.NO_path);
+	data->textures[EAST] = xpm_to_img(data, data->texinfo.EA_path);
+	data->textures[SOUTH] = xpm_to_img(data, data->texinfo.SO_path);
+	data->textures[WEST] = xpm_to_img(data, data->texinfo.WE_path);
 }
 
-void	init_texinfo(t_texinfo *textures)
-{
-	textures->north = NULL;
-	textures->south = NULL;
-	textures->west = NULL;
-	textures->east = NULL;
-	textures->floor = 0;
-	textures->ceiling = 0;
-	textures->hex_floor = 0x0;
-	textures->hex_ceiling = 0x0;
-	textures->size = TEX_SIZE;
-	textures->step = 0.0;
-	textures->pos = 0.0;
-	textures->x = 0;
-	textures->y = 0;
-}
+// void	init_texinfo(t_texinfo *textures)
+// {
+// 	textures->hex_floor = 0x0;
+// 	textures->hex_ceiling = 0x0;
+// 	textures->size = TEX_SIZE;
+// 	// textures->step = 0.0;
+// 	// textures->pos = 0.0;
+// 	// textures->x = 0;
+// 	// textures->y = 0;
+// }

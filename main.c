@@ -2,12 +2,11 @@
 
 /*	Initializes the data, assets, and map structures */
 
-void	initialization(t_data *data, t_texinfo *assets)
+void	initialization(t_data *data)
 {
 	ft_memset(data, 0, sizeof(*data));
-	ft_memset(assets, 0, sizeof(*assets));
+	ft_memset(&(data->texinfo), 0, sizeof(data->texinfo));
 	ft_memset(&(data->map), 0, sizeof(data->map));
-	data->assets = assets;
 	// data->map->width = 2;
 	// data->map->height = 2;
 }
@@ -15,15 +14,16 @@ void	initialization(t_data *data, t_texinfo *assets)
 int	main(int argc, char **argv)
 {
 	t_data data;
-	t_texinfo assets;
 
-	initialization(&data, &assets);
+	initialization(&data);
 	check_argument(argc, argv);
 	read_file(argv[1], &data);
 	parse_file(&data);
 	check_config(&data);
 	create_map(&data);
 	validate_map(&data);
+
+	init_textures(&data);
 	print_data(&data);
 	free_file(&data);
 	free_assets(&data);
