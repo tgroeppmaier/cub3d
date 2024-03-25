@@ -28,5 +28,9 @@ int	main(int argc, char **argv)
 	print_data(&data);
 	free_file(&data);
 	free_assets(&data);
+	mlx_destroy_window(data.mlx, data.win);
+	mlx_destroy_display(data.mlx);
+	free(data.mlx);
+	printf("end reached\n");
 	return (0);
 }

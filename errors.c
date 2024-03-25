@@ -1,12 +1,29 @@
 #include "cub3D.h"
 
+void free_textures(t_data *data)
+{
+	if (data->textures)
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			if (data->textures[i])
+			{
+				free(data->textures[i]);
+				data->textures[i] = NULL;
+			}
+		}
+		free(data->textures);
+		data->textures = NULL;
+	}
+}
+
 void	free_assets(t_data *data)
 {
 	free(data->texinfo.NO_path);
 	free(data->texinfo.SO_path);
 	free(data->texinfo.WE_path);
 	free(data->texinfo.EA_path);
-	free(data->textures);
+	free_textures(data);
 }
 
 void	free_file(t_data *data)
@@ -24,6 +41,7 @@ void	free_file(t_data *data)
 	free(data->file_by_line);
 	data->file_by_line = NULL;
 }
+
 
 void	free_array(char **array)
 {
@@ -47,6 +65,7 @@ void	print_error_exit(t_data *data, char *message)
 	free_file(data);
 	free_assets(data);
 	free_array(data->map.map_arr);
+	free_textures(data);
 	exit(1);
 }
 

@@ -47,9 +47,9 @@ static int	*xpm_to_img(t_data *data, char *path)
 
 void	init_textures(t_data *data)
 {
+    data->texinfo.size = TEX_SIZE;
     data->texinfo.hex_floor = (data->map.floor.red << 16) | (data->map.floor.green << 8) | data->map.floor.blue;
     data->texinfo.hex_ceiling = (data->map.ceiling.red << 16) | (data->map.ceiling.green << 8) | data->map.ceiling.blue;
-    data->texinfo.size = TEX_SIZE;
     data->textures = ft_calloc(5, sizeof * data->textures);
 	if (!data->textures)
 		print_error_exit(data, "mlx error/n");

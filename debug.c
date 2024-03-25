@@ -76,10 +76,5 @@ void print_data(t_data *data)
 	print_asset(&(data->texinfo));
 	print_map(&(data->map));
 	print_floor_and_ceiling_colors(&(data->texinfo));
-	// char **temp = data->file_by_line;
-	// while(*temp)
-	// {
-	// 	printf("%s\n", *temp);
-	// 	temp++;
-	// }
+	
 }
