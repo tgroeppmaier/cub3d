@@ -7,6 +7,7 @@ void	initialization(t_data *data)
 	ft_memset(data, 0, sizeof(*data));
 	ft_memset(&(data->texinfo), 0, sizeof(data->texinfo));
 	ft_memset(&(data->map), 0, sizeof(data->map));
+	ft_memset(&(data->player), 0, sizeof(data->player));
 	// data->map->width = 2;
 	// data->map->height = 2;
 }

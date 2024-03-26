@@ -1,5 +1,10 @@
 #include "cub3D.h"
 
+void	init_player(t_data *data)
+{
+	
+}
+
 void	init_texture_img(t_data *data, t_img *image, char *path)
 {
 	// init_img_clean(image);
