@@ -11,6 +11,7 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <string.h>
+# include <math.h>
 # include "mlx.h"
 
 # define TEX_SIZE 64
@@ -19,6 +20,12 @@
 
 # define WIN_WIDTH 640
 # define WIN_HEIGHT 480
+
+#ifdef M_PI
+double pi = M_PI;
+#else
+double pi = 3.14159265358979323846;
+#endif
 
 typedef enum {
 	ERR_USAGE,
@@ -78,17 +85,17 @@ enum e_texture_index
 
 typedef struct s_player
 {
-	char	dir;
-	double	pos_x;
-	double	pos_y;
-	double	dir_x;
-	double	dir_y;
-	double	plane_x;
-	double	plane_y;
-	int		has_moved;
-	int		move_x;
-	int		move_y;
-	int		rotate;
+	float	dir;
+	float	pos_x;
+	float	pos_y;
+	float	dir_x;
+	float	dir_y;
+	// double	plane_x;
+	// double	plane_y;
+	// int		has_moved;
+	// int		move_x;
+	// int		move_y;
+	// int		rotate;
 }	t_player;
 
 typedef struct s_ray

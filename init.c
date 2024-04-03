@@ -1,9 +1,19 @@
 #include "cub3D.h"
 
-// void	init_player(t_data *data)
-// {
+void	init_player(t_data *data)
+{
+	if (data->map.player_direction == 'N')
+		data->player.dir = pi / 2;
+	else if (data->map.player_direction == 'W')
+		data->player.dir = pi;
+	else if (data->map.player_direction == 'S')
+		data->player.dir = 3 * pi / 2;
+	else if (data->map.player_direction == 'E')
+		data->player.dir = 0;
 	
-// }
+	data->player.dir_x = data->map.player_x + 0.5;
+	data->player.dir_y = data->map.player_y + 0.5;
+}
 
 void	init_texture_img(t_data *data, t_img *image, char *path)
 {
