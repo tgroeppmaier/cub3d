@@ -33,13 +33,16 @@ void	free_file(t_data *data)
 	i = -1;
 	free(data->file);
 	data->file = NULL;
-	while (data->file_by_line[++i])
+	if (data->file_by_line != NULL)
 	{
-		free(data->file_by_line[i]);
-		data->file_by_line[i] = NULL;
+		while (data->file_by_line[++i])
+		{
+			free(data->file_by_line[i]);
+			data->file_by_line[i] = NULL;
+		}
+		free(data->file_by_line);
+		data->file_by_line = NULL;
 	}
-	free(data->file_by_line);
-	data->file_by_line = NULL;
 }
 
 

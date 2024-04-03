@@ -168,7 +168,7 @@ typedef struct s_data
 	int			**textures;
 
 
-	char		*file;
+	char		*file;			// file read into one string
 	char		**file_by_line;
 	t_player	player;
 	t_texinfo	texinfo;
