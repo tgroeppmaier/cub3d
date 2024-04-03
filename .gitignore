@@ -1,6 +1,6 @@
 *.o
 cub3D
-/lib/*
+/lib/*.a
 *.out
 vgcore.*
 mlx/libmlx_Linux.a
